@@ -1,4 +1,6 @@
 import mongoose from 'mongoose';
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 const userSchema = new mongoose.Schema(
     {
@@ -13,7 +15,9 @@ const userSchema = new mongoose.Schema(
         title: {
             type: String,
             trim: true,
+            minLength:[10,"Professional headline must be atleast 10 characters"],
             maxLength: [80, "Professional headline cannot exceed 80 characters"],
+            required:[true,"title is required"],
             default: ""
         },
 
@@ -64,6 +68,7 @@ const userSchema = new mongoose.Schema(
             type: String,
             required: [true, "Password is required"],
             minLength: [8, "Password must be at least 8 characters"],
+            maxLength:[12,"Password length exceed"],
             select: false
         },
 
@@ -76,7 +81,7 @@ const userSchema = new mongoose.Schema(
         profileImage: {
             type: String,
             trim: true,
-            default: "placeholder"
+            default: ""
         },
 
         resume: {
@@ -205,18 +210,21 @@ const userSchema = new mongoose.Schema(
             country: {
                 type: String,
                 trim: true,
+                default: ""
                 // required: [true, "Country is required"]
             },
 
             state: {
                 type: String,
                 trim: true,
+                default: ""
                 // required: [true, "State is required"]
             },
 
             city: {
                 type: String,
                 trim: true,
+                default: ""
                 // required: [true, "City is required"]
             },
 
@@ -228,7 +236,7 @@ const userSchema = new mongoose.Schema(
             },
 
             pincode: {
-                type: String,
+                type: Number,
                 trim: true,
                 match: [/^[1-9][0-9]{5}$/, "Enter a valid pincode"]
             }
@@ -249,11 +257,37 @@ const userSchema = new mongoose.Schema(
         }
     },
     {
-        timestamps:true
+        timestamps: true
     }
 );
 
-const User = mongoose.model('user',userSchema);
+userSchema.pre("save", async function () {
+
+    if (!this.isModified("password")) {
+        return;
+    }
+
+    this.password = await bcrypt.hash(this.password, 10);
+});
+
+userSchema.pre("save", function () {
+    if (!this.profileImage || this.profileImage === "placeholder") {
+        this.profileImage = this.name.charAt(0).toUpperCase();
+    }
+});
+
+userSchema.methods.generateToken = async function () {
+    return jwt.sign(
+        { id: this._id },
+        process.env.JWT_SECRET_KEY,
+        { expiresIn: "2d" }
+    )
+};
+
+
+
+
+const User = mongoose.model('user', userSchema);
 export default User;
 
 

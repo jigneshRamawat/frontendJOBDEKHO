@@ -1,7 +1,13 @@
+import MasterHome from "./Pages/MasterHome";
+import Navbar from "./Pages/Navbar";
+
 function App(){
   return (
-    <h1>Job Portal</h1>
-  );
-};
+    <>
+  
+    <MasterHome />
+    </>
+    );
+}
 
 export default App;

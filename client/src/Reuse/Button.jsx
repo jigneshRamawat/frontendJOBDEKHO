@@ -22,11 +22,12 @@ function Button({
         font-bold
         transition-all
         duration-300
+        cursor-pointer
         shadow-md
         hover:shadow-lg
         disabled:opacity-50
         disabled:cursor-not-allowed
-        border-3 
+        border-1
         border-white
         ${className}
       `}

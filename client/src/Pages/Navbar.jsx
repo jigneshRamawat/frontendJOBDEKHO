@@ -17,11 +17,11 @@ function Navbar() {
           </div>
           
           <div className="hidden lg:block">
-            <Button>Get Started</Button>
+            <Button >Get Started</Button>
           </div>
 
           <button 
-            className="lg:hidden text-gray-700 hover:text-[#FA7B3D] transition-colors" 
+            className="cursor-pointer lg:hidden text-gray-700 hover:text-[#FA7B3D] transition-colors" 
             onClick={() => setIsOpen(!isOpen)}
           >
             {isOpen ? <X size={30} /> : <Menu size={30} />}
@@ -32,7 +32,7 @@ function Navbar() {
       {isOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 py-5 px-6 absolute w-full shadow-lg left-0">
           <div className="flex flex-col gap-5">
-            <Button className="w-full">Get Started</Button>
+            <Button className="cursor-pointer w-full">Get Started</Button>
           </div>
         </div>
       )}

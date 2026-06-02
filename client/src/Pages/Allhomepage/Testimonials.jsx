@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight, Quote } from 'lucide-react';
 
 const testimonialsData = [
@@ -30,6 +30,21 @@ const testimonialsData = [
 
 function Testimonials() {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+
+  // Auto-play logic: Loops right to left every 4 seconds
+  useEffect(() => {
+    let interval;
+    // Pause animation if user is hovering over the card
+    if (!isHovered) {
+      interval = setInterval(() => {
+        setCurrentIndex((prevIndex) => 
+          prevIndex === testimonialsData.length - 1 ? 0 : prevIndex + 1
+        );
+      }, 2000); 
+    }
+    return () => clearInterval(interval);
+  }, [isHovered]);
 
   const handlePrevious = () => {
     setCurrentIndex((prevIndex) => 
@@ -53,7 +68,7 @@ function Testimonials() {
 
       <div className="max-w-5xl mx-auto px-6 relative z-10 w-full">
         
-        {/* Header */}
+        {/* Header & Dots */}
         <div className="text-center mb-12">
           <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-3">Testimonials</h2>
           <p className="text-gray-600">Our Clients Love Us</p>
@@ -74,55 +89,70 @@ function Testimonials() {
         </div>
 
         {/* Testimonial Card Container */}
-        <div className="relative max-w-3xl mx-auto ">
+        <div 
+          className="relative max-w-3xl mx-auto group"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           
           {/* Left Arrow */}
           <button 
             onClick={handlePrevious}
-            className="absolute -left-4 md:-left-20 top-1/2 -translate-y-1/2 bg-white text-[#EA580C] hover:bg-[#EA580C] hover:text-white border border-orange-100 p-3 rounded-full shadow-lg transition-all z-20"
+            className="absolute cursor-pointer -left-4 md:-left-16 top-1/2 -translate-y-1/2 bg-white text-[#EA580C] hover:bg-[#EA580C] hover:text-white border border-orange-100 p-3 rounded-full shadow-lg transition-all z-20"
             aria-label="Previous Testimonial"
           >
             <ChevronLeft size={24} />
           </button>
 
-          {/* Main Card */}
-          <div className="bg-[#EA580C] text-white rounded-[2rem] p-8 md:p-12 shadow-2xl relative overflow-hidden">
+          {/* Main Card Wrapper (Hides Overflow) */}
+          <div className="bg-[#EA580C] text-white rounded-[2rem] shadow-2xl relative overflow-hidden">
             
-            {/* Quote Marks Decoration */}
-            <Quote size={80} className="absolute top-4 left-4 text-white opacity-20 rotate-180" />
-            <Quote size={80} className="absolute bottom-4 right-4 text-white opacity-20" />
+            {/* Quote Marks Decoration (Static background) */}
+            <Quote size={80} className="absolute top-4 left-4 text-white opacity-20 rotate-180 z-0" />
+            <Quote size={80} className="absolute bottom-4 right-4 text-white opacity-20 z-0" />
 
-            <div className="flex flex-col md:flex-row items-center md:items-start gap-8 relative z-10">
-              
-              {/* Profile Image */}
-              <div className="shrink-0 md:top-12 top-0 relative">
-                <img 
-                  src={testimonialsData[currentIndex].image} 
-                  alt={testimonialsData[currentIndex].name} 
-                  className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4  shadow-lg"
-                />
-              </div>
+            {/* Sliding Track */}
+            <div 
+              className="flex transition-transform duration-700 ease-in-out relative z-10"
+              style={{ transform: `translateX(-${currentIndex * 100}%)` }}
+            >
+              {testimonialsData.map((testimonial) => (
+                
+                /* Individual Slide Content */
+                <div key={testimonial.id} className="w-full shrink-0 flex flex-col md:flex-row items-center md:items-start gap-8 p-8 md:p-12">
+                  
+                  {/* Profile Image */}
+                  <div className="shrink-0 md:top-12 top-0 relative">
+                    <img 
+                      src={testimonial.image} 
+                      alt={testimonial.name} 
+                      className="w-24 h-24 md:w-32 md:h-32 rounded-full object-cover border-4 shadow-lg"
+                    />
+                  </div>
 
-              {/* Content */}
-              <div className="flex-1 text-center md:text-left">
-                <p className="text-orange-100 text-sm font-medium mb-4 uppercase tracking-wider">
-                  {testimonialsData[currentIndex].name} - {testimonialsData[currentIndex].role}
-                </p>
-                <h3 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">
-                  {testimonialsData[currentIndex].title}
-                </h3>
-                <p className="text-orange-50 md:text-lg leading-relaxed">
-                  {testimonialsData[currentIndex].content}
-                </p>
-              </div>
+                  {/* Content */}
+                  <div className="flex-1 text-center md:text-left">
+                    <p className="text-orange-100 text-sm font-medium mb-4 uppercase tracking-wider">
+                      {testimonial.name} - {testimonial.role}
+                    </p>
+                    <h3 className="text-2xl md:text-3xl font-bold mb-4 leading-tight">
+                      {testimonial.title}
+                    </h3>
+                    <p className="text-orange-50 md:text-lg leading-relaxed">
+                      {testimonial.content}
+                    </p>
+                  </div>
 
+                </div>
+              ))}
             </div>
+
           </div>
 
           {/* Right Arrow */}
           <button 
             onClick={handleNext}
-            className="absolute -right-4 md:-right-20 top-1/2 -translate-y-1/2 bg-white text-[#EA580C] hover:bg-[#EA580C] hover:text-white border border-orange-100 p-3 rounded-full shadow-lg transition-all z-20"
+            className="absolute cursor-pointer -right-4 md:-right-16 top-1/2 -translate-y-1/2 bg-white text-[#EA580C] hover:bg-[#EA580C] hover:text-white border border-orange-100 p-3 rounded-full shadow-lg transition-all z-20"
             aria-label="Next Testimonial"
           >
             <ChevronRight size={24} />

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import img from "../../assest/img/bg.png"; // Correct path and extension
 
 // 1. Create an array of partner objects with their respective website links
@@ -12,6 +12,19 @@ const partnerCompanies = [
 ];
 
 const HeroSection = () => {
+
+  const phrases = ["Find Jobs", "Manage Workforce", "Hire Talent"];
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prevIndex) => (prevIndex + 1) % phrases.length);
+    }, 2000); 
+
+    // Clear the interval when the component unmounts
+    return () => clearInterval(interval);
+  }, [phrases.length]);
+
   return (
     <section className="min-h-screen bg-gradient-to-r from-[#fff7f2] via-[#fff3eb] to-[#ffe4d6] font-sans flex flex-col overflow-hidden pb-10">
       {/* 2. Custom Style for Infinite Marquee Animation */}
@@ -34,20 +47,37 @@ const HeroSection = () => {
       </style>
 
       {/* Main Hero Content */}
-      <main className="flex-1 flex flex-col items-center text-center px-4 mt-10 md:mt-16 w-full max-w-6xl mx-auto relative z-10">
-        <h1 className="w-full text-4xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-900 tracking-tight px-2">
-          From Finding the <span className="text-[#EA580C]">Job</span> To
-          Managing The <span className="text-orange-500">Team</span>
-        </h1>
+      <main className="flex-1 flex flex-col justify-center items-center  px-4 mt-5 md:mt-16 w-full max-w-6xl mx-auto relative z-10">
+      <div className="flex items-center ">
+      
+      {/* Hero Title */}
+      <h1 className="w-full text-4xl md:text-4xl lg:text-5xl font-bold leading-tight text-gray-900 tracking-tight px-2 flex flex-wrap items-center justify-center gap-x-3">
+        
+        <span>JobDekho Let's You</span>
+        
+        <span className="text-[#EA580C] overflow-hidden h-[1.25em] relative inline-block min-w-[280px] md:min-w-[350px]">
+          
+          <div 
+            className="transition-transform duration-500 ease-in-out flex flex-col"
+            style={{ transform: `translateY(-${index * 1.25}em)` }} 
+          >
+            {phrases.map((phrase, i) => (
+              <span key={i} className="h-[1.25em] block whitespace-nowrap">
+                {phrase}.
+              </span>
+            ))}
+          </div>
 
-        <p className="mt-5 text-lg md:text-xl text-gray-600 max-w-2xl leading-relaxed px-4">
-          Experience the complete journey. Find your next career move, hire top
-          talent, and manage your workforce seamlessly.
-        </p>
+        </span>
+        
+      </h1>
+      
+    </div>
+
 
         {/* Partner Companies Section (Animated) */}
-        <div className="mt-5 w-full max-w-4xl px-2 relative">
-          <p className="text-sm font-semibold text-[#FA7B3D] uppercase tracking-widest mb-6">
+        <div className="mt-5 w-full max-w-4xl px-2 relative flex flex-col  justify-center items-center">
+          <p className="text-sm font-semibold text-center text-[#FA7B3D] uppercase tracking-widest mb-6">
             In collaboration with our Partner Companies
           </p>
 
@@ -87,7 +117,7 @@ const HeroSection = () => {
           <img
             src={img}
             alt="User at desk illustration"
-            className="w-full max-w-sm md:max-w-2xl object-contain z-10 drop-shadow-2xl relative"
+            className=" w-full max-w-sm md:max-w-2xl object-contain z-10 drop-shadow-2xl relative"
           />
 
           {/* Subtle background glow for the image */}

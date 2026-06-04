@@ -4,41 +4,88 @@ import {
   useState,
 } from "react";
 
+import Loader from "../../Reuse/Loader";
+
 export const AppContext =
   createContext();
 
 export default function AppProvider({
   children,
 }) {
+  // ==========================
+  // STATES
+  // ==========================
   const [user, setUser] =
     useState(null);
 
+  // Page auth check loader
   const [loading, setLoading] =
-    useState(false);
+    useState(true);
+
+  // Login/Register button loader
+  const [
+    authLoading,
+    setAuthLoading,
+  ] = useState(false);
 
   const BASE_URL =
-    "https://jobdekho-3vnx.onrender.com/api/v1/auth";
+    "http://localhost:3000/api/v1/auth";
 
+  // ==========================
+  // CHECK AUTH ON REFRESH
+  // ==========================
   useEffect(() => {
-    const storedUser =
-      localStorage.getItem(
-        "cookies"
-      );
-
-    if (storedUser) {
-      setUser(
-        JSON.parse(
-          storedUser
-        )
-      );
-    }
+    checkAuth();
   }, []);
+
+  const checkAuth =
+    async () => {
+      try {
+        const response =
+          await fetch(
+            `${BASE_URL}/current-user`,
+            {
+              method:
+                "GET",
+              credentials:
+                "include",
+            }
+          );
+
+        if (!response.ok) {
+          setUser(null);
+          return;
+        }
+
+        const data =
+          await response.json();
+
+        setUser(
+          data?.data || null
+        );
+      } catch (
+        error
+      ) {
+        console.error(
+          "Auth Check Error:",
+          error
+        );
+
+        setUser(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+  // ==========================
+  // LOGIN USER
+  // ==========================
   const loginUser =
     async (
       credentials
     ) => {
       try {
-        setLoading(true);
+        setAuthLoading(true);
 
         const response =
           await fetch(
@@ -51,6 +98,9 @@ export default function AppProvider({
                 "Content-Type":
                   "application/json",
               },
+
+              credentials:
+                "include",
 
               body:
                 JSON.stringify(
@@ -65,44 +115,32 @@ export default function AppProvider({
         if (
           response.ok
         ) {
-          const user =
+          const loggedInUser =
             data?.data
-              ?.user;
+              ?.user || null;
 
-          const token =
-            data?.data
-              ?.token;
-
-          // Save token
-          localStorage.setItem(
-            "token",
-            token
+          setUser(
+            loggedInUser
           );
-
-          // Save user
-          localStorage.setItem(
-            "user",
-            JSON.stringify(
-              user
-            )
-          );
-
-          setUser(user);
 
           return {
             success: true,
+            message: `Welcome ${
+              loggedInUser?.name ||
+              "User"
+            }`,
           };
         }
 
-        alert(
-          data.message ||
-            "Login failed"
-        );
-
         return {
           success: false,
+          message:
+            data.message ||
+            "Login failed",
         };
-      } catch (error) {
+      } catch (
+        error
+      ) {
         console.error(
           "Login Error:",
           error
@@ -110,21 +148,23 @@ export default function AppProvider({
 
         return {
           success: false,
+          message:
+            "Something went wrong",
         };
       } finally {
-        setLoading(false);
+        setAuthLoading(false);
       }
     };
 
-  // ---------------------------
-  // Register User
-  // ---------------------------
+  // ==========================
+  // REGISTER USER
+  // ==========================
   const registerUser =
     async (
       formData
     ) => {
       try {
-        setLoading(true);
+        setAuthLoading(true);
 
         const response =
           await fetch(
@@ -137,6 +177,9 @@ export default function AppProvider({
                 "Content-Type":
                   "application/json",
               },
+
+              credentials:
+                "include",
 
               body:
                 JSON.stringify(
@@ -156,7 +199,7 @@ export default function AppProvider({
         if (
           response.ok
         ) {
-          // Auto Login
+          // Auto login
           return await loginUser(
             {
               email:
@@ -167,15 +210,15 @@ export default function AppProvider({
           );
         }
 
-        alert(
-          data.message ||
-            "Register failed"
-        );
-
         return {
           success: false,
+          message:
+            data.message ||
+            "Register failed",
         };
-      } catch (error) {
+      } catch (
+        error
+      ) {
         console.error(
           "Register Error:",
           error
@@ -183,48 +226,64 @@ export default function AppProvider({
 
         return {
           success: false,
+          message:
+            "Something went wrong",
         };
       } finally {
-        setLoading(false);
+        setAuthLoading(false);
       }
     };
 
-  // ---------------------------
-  // Logout
-  // ---------------------------
+  // ==========================
+  // LOGOUT USER
+  // ==========================
   const logoutUser =
     async () => {
       try {
-        setLoading(true);
+        setAuthLoading(true);
 
-        // Optional API call
         await fetch(
           `${BASE_URL}/logout`,
           {
             method:
               "POST",
+
+            credentials:
+              "include",
           }
         );
 
-        // Clear localStorage
-        localStorage.removeItem(
-          "cookies"
-        );
-
-        localStorage.removeItem(
-          "user"
-        );
-
         setUser(null);
-      } catch (error) {
+
+        return {
+          success: true,
+        };
+      } catch (
+        error
+      ) {
         console.error(
           "Logout Error:",
           error
         );
+
+        return {
+          success: false,
+        };
       } finally {
-        setLoading(false);
+        setAuthLoading(false);
       }
     };
+
+  // ==========================
+  // FULL SCREEN LOADER
+  // ==========================
+  if (loading) {
+    return (
+      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <Loader />
+      </div>
+    );
+  }
 
   return (
     <AppContext.Provider
@@ -232,6 +291,7 @@ export default function AppProvider({
         user,
         setUser,
         loading,
+        authLoading,
         loginUser,
         registerUser,
         logoutUser,
@@ -242,7 +302,10 @@ export default function AppProvider({
   );
 }
 
+// Optional typo fix
 export const AppContect =
   AppContext;
 
-export { AppProvider };
+export {
+  AppProvider,
+};

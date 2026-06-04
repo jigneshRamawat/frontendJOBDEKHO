@@ -2,27 +2,39 @@ import { FaLinkedinIn, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
 import Logo from "../../assest/img/pngLogo.png";
 import Button from "../../Reuse/Button";
 
+const scrollToServices = () => {
+  const section = document.getElementById("our-services");
+  if (section) {
+    // Scrolls smoothly to the top of the section
+    section.scrollIntoView({ behavior: "smooth", block: "start" });
+    
+    // Close the mobile menu automatically after clicking
+    setIsOpen(false);
+  }
+};
+
+
 function FooterBanner() {
   return (
     // Changed text-white to text-gray-900 to ensure visibility on the light gradient background
     <footer className="bg-gradient-to-r from-[#fff7f2] via-[#fff3eb] to-[#ffe4d6] text-gray-900 relative overflow-hidden">
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
-        <div className="bg-gradient-to-r from-[#EA580C] to-orange-500 rounded-[30px] p-8 md:p-12 lg:p-14 flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left shadow-2xl">
+        <div className="bg-white/10 rounded-[30px] p-8 md:p-12 lg:p-14 flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left shadow-2xl">
           <div>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white">
+            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-[#EA580C]">
               Ready To Find Your
               <br className="hidden md:block" /> Dream Job?
             </h2>
 
-            <p className="mt-4 text-orange-50 text-base md:text-lg max-w-xl mx-auto lg:mx-0">
+            <p className="mt-4 text-orange-400 text-base md:text-lg max-w-xl mx-auto lg:mx-0">
               Join thousands of professionals and discover better opportunities
               with JobDekho.
             </p>
           </div>
 
-          <Button>
-            Get Started
+          <Button text=" Get Started" onClick={scrollToServices}>
+           
           </Button>
         </div>
       </div>
@@ -72,7 +84,7 @@ function FooterBanner() {
                 "Contact",
                 "HR Dashboard"
               ].map((item) => (
-                <li key={item} className="hover:text-[#EA580C] hover:translate-x-1 cursor-pointer transition-all duration-200 flex items-center">
+                <li key={item} className="hover:text-[#EA580C] w-30 hover:translate-x-1 cursor-pointer transition-all duration-200 flex items-center">
                   {item}
                 </li>
               ))}
@@ -92,29 +104,25 @@ function FooterBanner() {
                 "Remote Jobs",
                 "Marketing",
               ].map((item) => (
-                <li key={item} className="hover:text-[#EA580C] hover:translate-x-1 cursor-pointer transition-all duration-200">
+                <li key={item} className="hover:text-[#EA580C] w-30 hover:translate-x-1 cursor-pointer transition-all duration-200">
                   {item}
                 </li>
               ))}
             </ul>
           </div>
 
-          {/* 4. Contact Info */}
           <div>
             <h3 className="text-lg md:text-xl text-[#EA580C] font-bold mb-6">
               Contact Us
             </h3>
             <div className="space-y-4 text-sm md:text-base text-gray-600 font-medium">
               <p className="flex items-start gap-2">
-                <span className="text-[#EA580C] mt-1">📍</span> 
                 Jaipur, Rajasthan, India
               </p>
               <p className="flex items-center gap-2 hover:text-[#EA580C] transition-colors cursor-pointer">
-                <span className="text-[#EA580C]">✉️</span> 
                 support@jobdekho.com
               </p>
               <p className="flex items-center gap-2 hover:text-[#EA580C] transition-colors cursor-pointer">
-                <span className="text-[#EA580C]">📞</span> 
                 +91 7340088133
               </p>
             </div>

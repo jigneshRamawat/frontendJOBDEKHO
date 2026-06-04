@@ -34,7 +34,7 @@ function CTASection() {
   const duplicatedCards = [...cards, ...cards];
 
   return (
-    <section className="py-32 bg-gradient-to-b from-[#fffaf5] to-orange-50 overflow-hidden">
+    <section className="py-32 bg-gradient-to-r from-[#fff7f2] via-[#fff3eb] to-[#ffe4d6] overflow-hidden">
       
       {/* 
         Inline CSS for the infinite marquee animation. 
@@ -73,10 +73,10 @@ function CTASection() {
             </h2>
           </div>
 
-          <Button >  
+          <button  className="px-4 rounded-2xl transition-all cursor-pointer   hover:bg-[#ea470c] py-4 bg-[#EA580C] flex items-center gap-1 text-white font-bold " >  
                View Services
-            <ArrowUpRight size={18} />
-          </Button>
+            <ArrowUpRight className="pt-1" size={20} />
+          </button>
         </div>
       </div>
 

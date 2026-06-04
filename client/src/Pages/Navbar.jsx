@@ -6,6 +6,18 @@ import Logo from "../assest/img/pngLogo.png";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
+  // Smooth scroll function
+  const scrollToServices = () => {
+    const section = document.getElementById("our-services");
+    if (section) {
+      // Scrolls smoothly to the top of the section
+      section.scrollIntoView({ behavior: "smooth", block: "start" });
+      
+      // Close the mobile menu automatically after clicking
+      setIsOpen(false);
+    }
+  };
+
   return (
 <header className="w-full bg-gradient-to-r from-[#fff7f2] via-[#fff3eb] to-[#ffe4d6] fixed top-0 left-0 z-50 ">
       <div className="max-w-7xl mx-auto px-6 lg:px-10">
@@ -17,10 +29,10 @@ function Navbar() {
           </div>
           
           <div className="hidden lg:block">
-            <Button >Get Started</Button>
+            <Button text="Get Start" onClick={scrollToServices} />
           </div>
 
-          <button 
+          <button
             className="cursor-pointer lg:hidden text-gray-700 hover:text-[#FA7B3D] transition-colors" 
             onClick={() => setIsOpen(!isOpen)}
           >
@@ -32,7 +44,7 @@ function Navbar() {
       {isOpen && (
         <div className="lg:hidden bg-white border-t border-gray-100 py-5 px-6 absolute w-full shadow-lg left-0">
           <div className="flex flex-col gap-5">
-            <Button className="cursor-pointer w-full">Get Started</Button>
+            <Button text='Get start' onClick={scrollToServices} className="cursor-pointer w-full">Get Started</Button>
           </div>
         </div>
       )}

@@ -7,18 +7,10 @@ function TrustedCompanies() {
           Driving 300,000+ Users To Successfully Lead Their Work-Life With Job Dekho HRMS  & Automation
         </h2>
 
-        <div className="flex justify-center gap-2 mb-6">
-          <span className="w-2 h-2 rounded-full bg-blue-500"></span>
-          <span className="w-2 h-2 rounded-full bg-green-500"></span>
-          <span className="w-2 h-2 rounded-full bg-yellow-500"></span>
-        </div>
 
         <p className="text-[#fc6113] text-sm md:text-base leading-relaxed max-w-4xl mx-auto mb-12 px-4 md:px-8">
-          As the <span className="font-bold text-gray-800">JobDekhoo is an  platform simplifying work-life for over 300,000 
+          As the <span className="font-bold text-gray-800">JobDekho is an  platform simplifying work-life for over 300,000 
             users. From smart CV parsing to paperless workflows, we empower HR leaders and employees to achieve more in less time</span>  </p>
-
-
-        
       </div>
     </section>
   );

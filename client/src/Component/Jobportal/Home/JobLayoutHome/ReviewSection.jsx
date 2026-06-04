@@ -1,0 +1,109 @@
+const reviews = [
+    {
+      name: "Jignesh",
+      role: "Placed",
+      feedback:
+        "JobDekhoo helped me find internship opportunities quickly. The UI is simple and easy to use.",
+    },
+    {
+      name: "Rahul",
+      role: "Placed",
+      feedback:
+        "Great platform for freshers. I got interview calls within a few days.",
+    },
+    {
+      name: "Priya",
+      role: "Placed",
+      feedback:
+        "Clean interface and real opportunities. Highly recommended.",
+    },
+    {
+      name: "Aman",
+      role: "Frontend Developer",
+      feedback:
+        "Amazing experience. Easy to apply jobs and smooth interface.",
+    },
+    {
+      name: "Sneha",
+      role: "UI/UX Designer",
+      feedback:
+        "Loved the experience. Fast and clean platform for job seekers.",
+    },
+  ];
+  
+  const ReviewSection = () => {
+    const shouldScroll = reviews.length >= 3;
+  
+    return (
+      <section className="bg-gradient-to-b from-white via-orange-50 to-[#e9d3c6] py-24 px-5 overflow-hidden">
+        <div className="max-w-7xl mx-auto">
+  
+          <div className="grid lg:grid-cols-[38%_62%] gap-10 items-center">
+  
+            {/* Left Side */}
+            <div className="bg-[#EA590D] rounded-[28px] text-white p-10 md:p-5 border-l-[5px] border-white shadow-xl">
+              <h2 className="text-3xl md:text-5xl font-bold leading-tight">
+              " Trusted by thousands of job seekers. See what they have to say "
+              </h2>
+            </div>
+  
+            {/* Right Side */}
+            <div className="overflow-hidden relative ">
+  
+              <div
+                className={`
+                  flex gap-12 h-[220px] w-auto shadow-6xl
+                  ${shouldScroll ? "animate-scroll" : ""}
+                `}
+              >
+                {/* Duplicate for seamless loop */}
+                {[...reviews, ...reviews].map((review, index) => (
+                  <div
+                    key={index}
+                    className="min-w-[320px] bg-white  rounded-[24px] p-8 shadow-lg border border-orange-100 hover:-translate-y-2 transition duration-300"
+                  >
+                    <h4 className="text-lg font-semibold text-gray-900">
+                      {review.name}
+                    </h4>
+  
+                    <span className="text-[#EA590D] font-semibold text-sm">
+                      {review.role}
+                    </span>
+  
+                    <p className="mt-5 text-gray-600 leading-8">
+                      {review.feedback}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+  
+        {/* Custom Animation */}
+        <style>
+          {`
+            @keyframes scroll {
+              from {
+                transform: translateX(0);
+              }
+              to {
+                transform: translateX(-50%);
+              }
+            }
+  
+            .animate-scroll {
+              width: max-content;
+              animation: scroll 28s linear infinite;
+            }
+  
+            .animate-scroll:hover {
+              animation-play-state: paused;
+            }
+          `}
+        </style>
+      </section>
+    );
+  };
+  
+  export default ReviewSection;

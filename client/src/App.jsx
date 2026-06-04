@@ -1,11 +1,10 @@
-import MasterHome from "./Pages/MasterHome";
-import Navbar from "./Pages/Navbar";
+
+import RouteMain from "./Routes/RouteMain";
 
 function App(){
   return (
     <>
-  
-    <MasterHome />
+    <RouteMain />
     </>
     );
 }

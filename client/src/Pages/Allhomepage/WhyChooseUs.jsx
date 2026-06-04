@@ -17,7 +17,8 @@ export default function WhyChooseUs() {
       title: "Verified Jobs",
       desc: "Trusted job opportunities from verified companies.",
       image: "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=1200",
-      color: "bg-orange-50",
+      // Very light, almost white-orange
+      color: "bg-gray-50", 
     },
     {
       key: "fastApply",
@@ -26,7 +27,8 @@ export default function WhyChooseUs() {
       title: "Fast Apply",
       desc: "Apply instantly without lengthy forms.",
       image: "https://images.unsplash.com/photo-1521791136064-7986c2920216?w=1200",
-      color: "bg-blue-100",
+      // Slightly deeper
+      color: "bg-rose-100", 
     },
     {
       key: "workflow",
@@ -35,7 +37,8 @@ export default function WhyChooseUs() {
       title: "Workflow Manage",
       desc: "Track hiring and applications professionally.",
       image: "https://images.unsplash.com/photo-1552664730-d307ca884978?w=1200",
-      color: "bg-green-100",
+      // Soft peach/orange
+      color: "bg-red-100", 
     },
     {
       key: "growth",
@@ -44,7 +47,8 @@ export default function WhyChooseUs() {
       title: "Career Growth",
       desc: "Unlock better opportunities and career success.",
       image: "https://images.unsplash.com/photo-1522202176988-66273c2fd55f?w=1200",
-      color: "bg-purple-100",
+      // Mid-light orange
+      color: "bg-rose-200", 
     },
     {
       key: "dashboard",
@@ -53,14 +57,14 @@ export default function WhyChooseUs() {
       title: "Smart Dashboard",
       desc: "Manage analytics and applicants in one place.",
       image: "https://imgs.search.brave.com/i1ASIfx3lrxO7mHa8BOJdmgtkKMYEb5tHLgFZDYJ70Y/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9pLnBp/bmltZy5jb20vb3Jp/Z2luYWxzLzU0LzYz/LzM1LzU0NjMzNWJm/MGRlYTBmN2Y5NjVl/Yzk2ZDJlM2YzZDc2/LmpwZw",
-      color: "bg-orange-100",
+      // Noticeable orange (but light enough for dark text)
+      color: "bg-rose-200", 
     },
   ];
-
   return (
     // NOTE: Removed `overflow-hidden` from the parent section. 
     // `overflow-hidden` breaks CSS `position: sticky`.
-    <section className="bg-gray-50 py-20 px-4">
+    <section className="bg-gradient-to-r from-[#fff7f2] via-[#fff3eb] to-[#ffe4d6] py-20 px-4">
       <div className="max-w-6xl mx-auto">
         
         {/* HEADER */}
@@ -79,7 +83,7 @@ export default function WhyChooseUs() {
           {cards.map((card, index) => (
             <div
               key={card.key}
-              className={`sticky w-full rounded-[30px] border-1 border-orange-200 shadow-2xl overflow-hidden transition-all duration-300 ${card.color}`}
+              className={`sticky w-full rounded-4xl shadow-2xl overflow-hidden transition-all duration-300 ${card.color}`}
               style={{
                 top: `calc(6rem + ${index * 2.5}rem)`, 
                 zIndex: index + 1, // Ensures the next card always overlaps the previous one
@@ -106,8 +110,8 @@ export default function WhyChooseUs() {
                     {card.desc}
                   </p>
                   
-                  <Button className="mt-15">
-                    Learn More →
+                  <Button text="Learn More →" className="mt-15">
+                    
                   </Button>
                 </div>
 

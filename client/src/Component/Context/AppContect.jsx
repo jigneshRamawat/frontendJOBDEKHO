@@ -29,7 +29,7 @@ export default function AppProvider({
   ] = useState(false);
 
   const BASE_URL =
-    "http://localhost:3000/api/v1/auth";
+   "https://jobdekho-3vnx.onrender.com";
 
   // ==========================
   // CHECK AUTH ON REFRESH
@@ -43,7 +43,7 @@ export default function AppProvider({
       try {
         const response =
           await fetch(
-            `${BASE_URL}/current-user`,
+            `${BASE_URL}/api/v1/auth/current-user`,
             {
               method:
                 "GET",
@@ -89,7 +89,7 @@ export default function AppProvider({
 
         const response =
           await fetch(
-            `${BASE_URL}/login`,
+            `${BASE_URL}/api/v1/auth/login`,
             {
               method:
                 "POST",
@@ -168,7 +168,7 @@ export default function AppProvider({
 
         const response =
           await fetch(
-            `${BASE_URL}/register`,
+            `${BASE_URL}/api/v1/auth/register`,
             {
               method:
                 "POST",
@@ -243,7 +243,7 @@ export default function AppProvider({
         setAuthLoading(true);
 
         await fetch(
-          `${BASE_URL}/logout`,
+          `${BASE_URL}/api/v1/auth/logout`,
           {
             method:
               "POST",

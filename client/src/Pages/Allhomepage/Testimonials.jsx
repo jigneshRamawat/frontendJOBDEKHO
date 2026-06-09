@@ -6,7 +6,7 @@ const testimonialsData = [
     id: 1,
     name: 'Aboli Patne',
     role: 'HR Executive, Green-Ecomes Solutions Pvt Ltd',
-    title: 'JobDekhoo made Ecomes HR Operations Efficient and Accurate!',
+    title: 'JobDekho made Ecomes HR Operations Efficient and Accurate!',
     content: 'We are pleased to report that we are utilizing most of the modules of the JobDekhoo portal, including attendance, leaves, resignation, payroll, and performance. We are satisfied with the service provided by JobDekhoo, which has significantly improved the accuracy and efficiency of our processes.',
     image: 'https://imgs.search.brave.com/nCyynTaR7wbrCtFgz5GeTa6NJWqQSW9e_ixY1dRcuQc/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQz/NjA0MDYxMS92ZWN0/b3Ivc29mdHdhcmUt/ZGV2ZWxvcGVyLTJk/LXZlY3Rvci1pc29s/YXRlZC1pbGx1c3Ry/YXRpb24uanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPTRBWThn/SER5eWNqMVZJYmxq/YnZwUWduOFNzZXBy/ODhZZkw4bU4ydFhM/cGM9'
   },

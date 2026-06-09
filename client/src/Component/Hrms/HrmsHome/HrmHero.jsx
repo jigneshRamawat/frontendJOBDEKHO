@@ -49,7 +49,7 @@ const HrmHero = () => {
         </p>
 
         <div className="relative overflow-hidden ">
-          <div className="flex w-max animate-infiniteScroll gap-4 md:gap-6">
+          <div className="flex w-max animate-infiniteScroll gap-4 md:gap-6 p-5">
 
             {[
               ...partnerCompanies,

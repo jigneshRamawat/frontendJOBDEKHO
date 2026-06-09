@@ -9,7 +9,7 @@ import Login from "../Component/Jobportal/AuthPages/Login";
 import Register from "../Component/Jobportal/AuthPages/Register";
 import CompanyRegister from "../Component/Hrms/HrmsHome/CompanyRegister";
 import HrmLogin from "../Component/Hrms/HrmsHome/HrmLogin";
-import Hrmsintrodetails from "../Component/Hrms/HrmsHome/hrmsintrodetails";
+import Hrmsintrodetails from "../Component/Hrms/HrmsHome/Hrmsintrodetails";
 
 function ScrollToTop() {
   const { pathname } = useLocation();

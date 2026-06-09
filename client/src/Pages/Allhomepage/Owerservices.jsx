@@ -13,7 +13,7 @@ export default function Owerservices() {
       icon: <Briefcase size={18} />,
       badge: "Smart Job Search",
       title: "Advanced Job Portal",
-      Link:"/JobHome",
+      Link:"/jobs",
       description:
         "Find your dream job or hire top talent instantly. Manage applications, track statuses, and connect with verified companies effortlessly in one place.",
       image:
@@ -26,7 +26,7 @@ export default function Owerservices() {
       icon: <Users size={18} />,
       badge: "Smart Dashboard",
       title: "Smart HRMS Dashboard",
-      Link:"/HrmsHome",
+      Link:"/hrms",
       description:
         "Manage analytics, payroll, attendance, and your entire workforce in one unified place. Automate your HR workflows with intelligent tracking.",
       image:
@@ -93,7 +93,7 @@ export default function Owerservices() {
               <Link to={currentService.Link}>
                 
                 <button className="bg-[#EA580C] cursor-pointer hover:bg-orange-700 text-white px-8 py-3.5 rounded-xl font-bold text-lg transition-all duration-300 shadow-lg hover:shadow-orange-500/30 hover:-translate-y-1">
-                  Forward to dashboard
+                  Go to dashboard
                 </button>
               </Link>
             </div>

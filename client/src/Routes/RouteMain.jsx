@@ -48,8 +48,8 @@ function RouteMain() {
         <Routes location={location} key={location.pathname}>
           
           <Route path="/" element={<PageTransition><MasterHome/></PageTransition>} />
-          <Route path="/HrmsHome" element={<PageTransition><HrmsHome/></PageTransition>} />
-          <Route path="/JobHome" element={<PageTransition><JobHome/></PageTransition>} />
+          <Route path="/hrms" element={<PageTransition><HrmsHome/></PageTransition>} />
+          <Route path="/jobs" element={<PageTransition><JobHome/></PageTransition>} />
           <Route path="/login" element={<PageTransition><Login/></PageTransition>} />
           <Route path="/register" element={<PageTransition><Register/></PageTransition>} />
           <Route path="/company-register" element={<PageTransition><CompanyRegister/></PageTransition>} />

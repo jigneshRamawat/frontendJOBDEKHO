@@ -6,7 +6,6 @@ import Logo from "../assest/img/pngLogo.png";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Smooth scroll function
   const scrollToServices = () => {
     const section = document.getElementById("our-services");
     if (section) {
@@ -29,7 +28,7 @@ function Navbar() {
           </div>
           
           <div className="hidden lg:block">
-            <Button text="Get Start" onClick={scrollToServices} />
+            <Button text="Get Started" onClick={scrollToServices} />
           </div>
 
           <button

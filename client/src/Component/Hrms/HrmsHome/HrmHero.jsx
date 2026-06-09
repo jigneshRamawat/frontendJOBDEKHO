@@ -33,9 +33,9 @@ const HrmHero = () => {
 
   return (
     <section className="pt-20 pb-20 px-5 bg-gradient-to-b from-white via-orange-50 to-[#e9d3c6] overflow-hidden">
-      <div className="max-w-7xl mx-auto text-center">
+      <div className="max-w-7xl mt-16 mx-auto text-center">
 
-        <h1 className="text-4xl mt-10 md:text-6xl font-semibold text-gray-900 leading-tight">
+        <h1 className="text-4xl md:text-4xl lg:text-5xl font-semibold text-gray-900 leading-tight">
           The New Era Of HR
           <br />
 

@@ -111,7 +111,7 @@ const HeroSection = () => {
         {/* Center Illustration with Responsive Floating Orbs */}
         <div className="mt-12  md:mt-10 h-100 w-full flex justify-center relative max-w-4xl px-4 md:px-0">
           {/* HRMS Software Floating Box */}
-          <Link to = "/HrmsHome"> <div className="cursor-pointer absolute top-10 md:top-20 -left-2 md:-left-10 lg:-left-20 w-24 h-24 md:w-40 md:h-40 lg:w-56 lg:h-56 bg-gradient-to-br from-orange-400 to-[#EA580C] rounded-full flex justify-center text-center items-center text-white font-bold text-xs md:text-xl lg:text-3xl shadow-5xl border-2 md:border-4 border-white z-20 animate-[bounce_5s_infinite]">
+          <Link to = "/hrms"> <div className="cursor-pointer absolute top-10 md:top-20 -left-2 md:-left-10 lg:-left-20 w-24 h-24 md:w-40 md:h-40 lg:w-56 lg:h-56 bg-gradient-to-br from-orange-400 to-[#EA580C] rounded-full flex justify-center text-center items-center text-white font-bold text-xs md:text-xl lg:text-3xl shadow-5xl border-2 md:border-4 border-white z-20 animate-[bounce_5s_infinite]">
             HRMS <br className="hidden md:block" /> Software
           </div></Link>
 
@@ -126,7 +126,7 @@ const HeroSection = () => {
           <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[90%] md:w-[80%] h-[80%] bg-orange-100/80 rounded-full blur-[80px] md:blur-[100px] -z-10"></div>
 
           {/* Job Portal Floating Box */}
-         <Link to="/JobHome" ><div className="cursor-pointer absolute bottom-15 md:bottom-22 -right-2 md:-right-10 lg:-right-20 w-24 h-24 md:w-40 md:h-40 lg:w-56 lg:h-56 bg-gradient-to-tl from-orange-400 to-[#EA580C] rounded-full flex justify-center text-center items-center text-white font-bold text-xs md:text-xl lg:text-3xl shadow-5xl border-2 md:border-4 border-white z-20 delay-200 transition animate-[bounce_4s_infinite]">
+         <Link to="/jobs" ><div className="cursor-pointer absolute bottom-15 md:bottom-22 -right-2 md:-right-10 lg:-right-20 w-24 h-24 md:w-40 md:h-40 lg:w-56 lg:h-56 bg-gradient-to-tl from-orange-400 to-[#EA580C] rounded-full flex justify-center text-center items-center text-white font-bold text-xs md:text-xl lg:text-3xl shadow-5xl border-2 md:border-4 border-white z-20 delay-200 transition animate-[bounce_4s_infinite]">
             Job <br className="hidden md:block" /> Portal
           </div></Link>
         </div>

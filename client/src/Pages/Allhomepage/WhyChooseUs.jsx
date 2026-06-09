@@ -115,7 +115,6 @@ export default function WhyChooseUs() {
                   </Button>
                 </div>
 
-                {/* RIGHT SIDE (Image) */}
                 <div className="relative w-full h-full min-h-[300px] lg:min-h-[400px]">
                   <div className="absolute inset-0 bg-[#EA580C] blur-[80px] opacity-10 rounded-full"></div>
                   <img

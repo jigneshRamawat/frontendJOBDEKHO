@@ -51,7 +51,7 @@ function NavbarHrm() {
 
           {/* Logo */}
           <div className="cursor-pointer flex items-center h-full">
-            <Link to="/HrmsHome">
+            <Link to="/">
               <img
                 className="h-60 w-auto object-contain"
                 src={Logo}

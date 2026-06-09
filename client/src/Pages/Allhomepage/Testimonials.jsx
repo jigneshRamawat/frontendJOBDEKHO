@@ -8,7 +8,7 @@ const testimonialsData = [
     role: 'HR Executive, Green-Ecomes Solutions Pvt Ltd',
     title: 'JobDekhoo made Ecomes HR Operations Efficient and Accurate!',
     content: 'We are pleased to report that we are utilizing most of the modules of the JobDekhoo portal, including attendance, leaves, resignation, payroll, and performance. We are satisfied with the service provided by JobDekhoo, which has significantly improved the accuracy and efficiency of our processes.',
-    image: 'https://placehold.co/100x100/ea580c/ffffff?text=AP'
+    image: 'https://imgs.search.brave.com/nCyynTaR7wbrCtFgz5GeTa6NJWqQSW9e_ixY1dRcuQc/rs:fit:500:0:1:0/g:ce/aHR0cHM6Ly9tZWRp/YS5pc3RvY2twaG90/by5jb20vaWQvMTQz/NjA0MDYxMS92ZWN0/b3Ivc29mdHdhcmUt/ZGV2ZWxvcGVyLTJk/LXZlY3Rvci1pc29s/YXRlZC1pbGx1c3Ry/YXRpb24uanBnP3M9/NjEyeDYxMiZ3PTAm/az0yMCZjPTRBWThn/SER5eWNqMVZJYmxq/YnZwUWduOFNzZXBy/ODhZZkw4bU4ydFhM/cGM9'
   },
   {
     id: 2,
@@ -16,7 +16,7 @@ const testimonialsData = [
     role: 'Technical Lead, TechNova',
     title: 'The best hiring experience we have ever had.',
     content: 'Finding the right talent used to take weeks. With JobDekhoo, we sourced, interviewed, and hired two senior developers within 5 days. The AI-driven matching is incredibly accurate, saving our HR team countless hours of manual filtering.',
-    image: 'https://placehold.co/100x100/ea580c/ffffff?text=RS'
+    image: 'https://imgs.search.brave.com/eUpI_hjyQUOB9C7GvKW9ubN9lM-tkw6_DzSwjJenX3g/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9zdGF0/aWMudmVjdGVlenku/Y29tL3N5c3RlbS9y/ZXNvdXJjZXMvdGh1/bWJuYWlscy8wMzIv/NDY1LzUxMi9zbWFs/bC8zZC1jYXJ0b29u/LWNoYXJhY3Rlci1h/bmQtY29tcHV0ZXIt/d2l0aC1vcGVuLXBh/Z2VzLXdlYi1hbmFs/eXRpY3Mtc2VvLW9w/dGltaXphdGlvbi1k/YXNoYm9hcmQtZnJl/ZS1waG90by5qcGc'
   },
   {
     id: 3,
@@ -24,7 +24,7 @@ const testimonialsData = [
     role: 'Operations Manager, BuildFast',
     title: 'Paperless workflows changed our daily routine entirely.',
     content: 'The transition to JobDekhoo was seamless. The self-service portal empowered our employees to manage their own time-offs and tax documents without constantly emailing HR. It is intuitive, fast, and highly reliable.',
-    image: 'https://placehold.co/100x100/ea580c/ffffff?text=PD'
+    image: 'https://imgs.search.brave.com/Lj6v56VBfF2khR1z7vgAgfSbccNyo412NYH18cW3CrY/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90ZW1w/bGF0ZS5jYW52YS5j/b20vRUFHLUVXQkdm/RU0vMS8wLzE2MDB3/LWRkTUVsaEFSc0hj/LmpwZw'
   }
 ];
 

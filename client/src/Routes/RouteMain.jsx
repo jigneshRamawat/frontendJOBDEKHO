@@ -10,6 +10,7 @@ import Register from "../Component/Jobportal/AuthPages/Register";
 import CompanyRegister from "../Component/Hrms/HrmsHome/CompanyRegister";
 import HrmLogin from "../Component/Hrms/HrmsHome/HrmLogin";
 import Hrmsintrodetails from "../Component/Hrms/HrmsHome/Hrmsintrodetails";
+import MainWhyDetails from "../Pages/Allhomepage/MainWhyDetails";
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -117,6 +118,8 @@ function RouteMain() {
               </PageTransition>
             }
           />
+
+          <Route path="/mainwhydetails/:id" element={<AnimatePresence><MainWhyDetails /></AnimatePresence>} />
         </Routes>
       </AnimatePresence>
     </>

@@ -7,6 +7,8 @@ import MasterHome from '../Pages/MasterHome';
 import JobHome from '../Component/Jobportal/Home/JobHome';
 import Login from '../Component/Jobportal/AuthPages/Login';
 import Register from '../Component/Jobportal/AuthPages/Register';
+import CompanyRegister from '../Component/Hrms/HrmsHome/CompanyRegister';
+import HrmLogin from '../Component/Hrms/HrmsHome/HrmLogin';
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -50,6 +52,8 @@ function RouteMain() {
           <Route path="/JobHome" element={<PageTransition><JobHome/></PageTransition>} />
           <Route path="/login" element={<PageTransition><Login/></PageTransition>} />
           <Route path="/register" element={<PageTransition><Register/></PageTransition>} />
+          <Route path="/company-register" element={<PageTransition><CompanyRegister/></PageTransition>} />
+          <Route path="/hrm-login" element={<PageTransition><HrmLogin/></PageTransition>} />
           
           <Route path="*" element={
             <PageTransition>

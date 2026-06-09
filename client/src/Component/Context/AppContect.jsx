@@ -1,6 +1,6 @@
 import { createContext, useEffect, useState } from "react";
 import Loader from "../../Reuse/Loader";
-import { toast } from 'react-hot-toast';
+import { toast } from "react-hot-toast";
 
 import {
   checkAuthApi,
@@ -9,19 +9,20 @@ import {
   logoutApi,
 } from "../Api.jsx";
 
-// Sahi nam se context banaya
+import { registerCompanyApi } from "../HrmApi.jsx";
+
 export const AppContext = createContext();
 
 export default function AppProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [authLoading, setAuthLoading] = useState(false);
+  const [companyLoading, setCompanyLoading] = useState(false);
 
   useEffect(() => {
     checkAuth();
   }, []);
 
-  // Application load hote hi user check karne ke liye
   const checkAuth = async () => {
     try {
       const { response, data } = await checkAuthApi();
@@ -44,7 +45,6 @@ export default function AppProvider({ children }) {
     }
   };
 
-  // Login Functionality
   const loginUser = async (credentials) => {
     try {
       setAuthLoading(true);
@@ -54,71 +54,54 @@ export default function AppProvider({ children }) {
         const loggedInUser = data?.data?.user || null;
         setUser(loggedInUser);
 
-        const welcomeMsg = `Welcome ${loggedInUser?.name || "User"}!`;
-        toast.success(welcomeMsg); // Normal login par bhi toast chalega
+        toast.success(`Welcome ${loggedInUser?.name || "User"}!`);
 
-        return { success: true, message: welcomeMsg };
+        return { success: true };
       }
 
       toast.error(data.message || "Login failed");
-      return { success: false, message: data.message || "Login failed" };
-
+      return { success: false };
     } catch (error) {
-      console.error("Login Error:", error);
       toast.error("Something went wrong during login");
-      return { success: false, message: "Something went wrong" };
+      return { success: false };
     } finally {
       setAuthLoading(false);
     }
   };
 
-  // Register Functionality (With updated auto-login handler)
   const registerUser = async (formData) => {
     try {
       setAuthLoading(true);
+
       const { response, data } = await registerApi(formData);
 
-      console.log("REGISTER RESPONSE:", data);
-
       if (response.ok) {
-        toast.success(data?.message || "Account created successfully! Logging in...");
+        toast.success("Account created!");
 
-        // Auto login trigger
-        const loginRes = await loginUser({
+        return await loginUser({
           email: formData.email,
           password: formData.password,
         });
-
-        return loginRes || { success: true };
       }
 
-      // 409 Conflict (Email already exists) ya koi bhi validation error handle karega
-      const errorMessage = data?.message || "Registration failed. Please try again.";
-      toast.error(errorMessage);
-
-      return { success: false, message: errorMessage };
-
+      toast.error(data.message || "Registration failed");
+      return { success: false };
     } catch (error) {
-      console.error("Register Error:", error);
-      const catchMessage = error?.message || "Something went wrong. Connection failed.";
-      toast.error(catchMessage);
-
-      return { success: false, message: catchMessage };
+      toast.error("Something went wrong");
+      return { success: false };
     } finally {
       setAuthLoading(false);
     }
   };
 
-  // Logout Functionality
   const logoutUser = async () => {
     try {
       setAuthLoading(true);
       await logoutApi();
       setUser(null);
-      toast.success("Logged out successfully");
+      toast.success("Logged out");
       return { success: true };
     } catch (error) {
-      console.error("Logout Error:", error);
       toast.error("Logout failed");
       return { success: false };
     } finally {
@@ -126,7 +109,28 @@ export default function AppProvider({ children }) {
     }
   };
 
-  // Initial Loading state blocker
+  // ⭐⭐⭐ FIX: COMPANY REGISTER FUNCTION (THIS WAS MISSING)
+  const registerCompany = async (payload) => {
+    try {
+      setCompanyLoading(true);
+
+      const data = await registerCompanyApi(payload);
+
+      if (data?.success === false) {
+        toast.error(data.message || "Company registration failed");
+        return { success: false };
+      }
+
+      toast.success("Company registered successfully");
+      return { success: true, data };
+    } catch (error) {
+      toast.error("Company registration error");
+      return { success: false };
+    } finally {
+      setCompanyLoading(false);
+    }
+  };
+
   if (loading) {
     return (
       <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
@@ -142,9 +146,14 @@ export default function AppProvider({ children }) {
         setUser,
         loading,
         authLoading,
+        companyLoading, // optional
+
         loginUser,
         registerUser,
         logoutUser,
+
+        // ⭐ FIXED EXPORT
+        registerCompany,
       }}
     >
       {children}
@@ -152,6 +161,5 @@ export default function AppProvider({ children }) {
   );
 }
 
-// Typo fixed export: dono name rakh diye taaki purani files break na ho
-export const AppContect = AppContext; 
+export const AppContect = AppContext;
 export { AppProvider };

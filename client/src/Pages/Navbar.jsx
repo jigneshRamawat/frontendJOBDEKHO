@@ -9,10 +9,8 @@ function Navbar() {
   const scrollToServices = () => {
     const section = document.getElementById("our-services");
     if (section) {
-      // Scrolls smoothly to the top of the section
       section.scrollIntoView({ behavior: "smooth", block: "start" });
       
-      // Close the mobile menu automatically after clicking
       setIsOpen(false);
     }
   };

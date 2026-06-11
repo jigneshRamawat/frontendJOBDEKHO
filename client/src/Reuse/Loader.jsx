@@ -1,16 +1,33 @@
 const Loader = ({ size = "small" }) => {
-    return (
-      <div className="flex items-center justify-center">
-        <div
+  const dimensions = size === "small" 
+    ? { width: "w-20", height: "h-20", text: "text-sm" }
+    : { width: "w-26", height: "h-26", text: "text-xl" };
+
+  return (
+    <div className="flex items-center justify-center">
+      <div
+        className={`
+          ${dimensions.width} ${dimensions.height}
+          border-4 border-orange-200
+          border-t-[#EA590D]
+          border-r-[#EA590D]
+          rounded-full animate-spin
+          flex items-center justify-center
+        `}
+      >
+        <span
           className={`
-            border-4 border-orange-200
-            border-t-[#EA590D]
-            rounded-full animate-spin
-            ${size === "small" ? "w-5 h-5" : "w-8 h-8"}
+            ${dimensions.text}
+            font-bold
+            text-[#EA590D]
+            animate-pulse
           `}
-        />
+        >
+          JD
+        </span>
       </div>
-    );
-  };
-  
-  export default Loader;
+    </div>
+  );
+};
+
+export default Loader;

@@ -62,44 +62,57 @@ function HrmLogin() {
     }));
   }
 
-  // ==========================
-  // HANDLE LOGIN
-  // ==========================
-  async function handleSubmit(e) {
-    e.preventDefault();
+async function handleSubmit(e) {
+  e.preventDefault();
 
-    const isValid = validate();
+  const isValid = validate();
 
-    if (!isValid) return;
+  if (!isValid) return;
 
-    try {
-      const response = await loginUser(formData);
+  try {
+    const response = await loginUser(formData);
 
-      if (response?.success) {
-        toast.success(response.message || "Login successful!");
+    if (response?.success) {
+      toast.success(
+        response.message || "Login successful!"
+      );
 
-        // Clear form
-        setFormData({
-          email: "",
-          password: "",
+      setFormData({
+        email: "",
+        password: "",
+      });
+
+      const role = response?.role;
+
+      // Role based redirect
+      if (role === "company") {
+        navigate("/componydashbord", {
+          replace: true,
         });
-
-        // Redirect path
-        const redirectPath = location.state?.from || "/JobHome";
-
-        // Navigate instantly
-        navigate(redirectPath, {
+      } else if (role === "hr") {
+        navigate("/hrdashboard", {
+          replace: true,
+        });
+      } else if (role === "employee") {
+        navigate("/employeedashboard", {
           replace: true,
         });
       } else {
-        toast.error(response?.message || "Login failed");
+        navigate("/hrms", {
+          replace: true,
+        });
       }
-    } catch (error) {
-      console.error("Login Error:", error);
-
-      toast.error("Something went wrong");
+    } else {
+      toast.error(
+        response?.message || "Login failed"
+      );
     }
+  } catch (error) {
+    console.error("Login Error:", error);
+
+    toast.error("Something went wrong");
   }
+}
 
   return (
     <>

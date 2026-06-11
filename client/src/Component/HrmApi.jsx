@@ -1,30 +1,36 @@
-// HrmApi.jsx
-import axios from "axios";
 
-const BASE_URL =
-  "https://jobdekho-3vnx.onrender.com/api/v1";
-
-const hrmApi = axios.create({
-  baseURL: BASE_URL,
-  withCredentials: true,
-});
-
-export const registerCompanyApi = async (companyData) => {
+/**
+ * @param {Object} payload - Form fields originating from the component hook layers
+ * @returns {Promise<Object>} Cleaned JSON structure mapping endpoint execution status
+ */
+export const registerCompanyApi = async (payload) => {
   try {
-    const response = await hrmApi.post(
-      "/company/companyprofile",
-      companyData
-    );
+    const response = await fetch("https://jobdekho-3vnx.onrender.com/api/v1/company/register", {
+      method: "POST",
+      headers: {
+        "accept": "*/*",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(payload),
+    });
 
-    return response.data;
+    const data = await response.json();
+
+    if (!response.ok) {
+      console.error("🔴 Backend Validation Error Payload:", data);
+      
+      return {
+        success: false,
+        message: data?.message || `Validation Failed (${response.status})`,
+      };
+    }
+
+    return { success: true, ...data };
   } catch (error) {
+    console.error("Network layer crash inside registerCompanyApi:", error);
     return {
       success: false,
-      message:
-        error?.response?.data?.message ||
-        "Company registration failed",
+      message: "Network request failed. Check server status.",
     };
   }
 };
-
-export default hrmApi;

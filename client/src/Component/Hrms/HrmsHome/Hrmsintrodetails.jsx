@@ -1,6 +1,5 @@
 // Component/Hrms/HrmsHome/Hrmsintrodetails.jsx
 
-import React from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { hrmsFeatures } from "./hrmsData";
 import {

@@ -9,6 +9,8 @@ import {
 } from "react-toastify";
 
 import "react-toastify/dist/ReactToastify.css";
+import Logo from '../../../assest/img/pngLogo.png'
+
 
 import {
   Link,
@@ -201,13 +203,16 @@ function Login() {
       <div className="min-h-screen flex bg-gradient-to-b from-white via-orange-50 to-[#e9d3c6]">
 
         {/* LEFT SIDE */}
-        <div className="absolute pl-23 pt-6">
-          <h1 className="text-3xl font-extrabold text-black relative">
-            JobDekhoo
-
-            <span className="absolute left-0 -bottom-1 h-1 w-13 rounded-full bg-[#EA590D]" />
-          </h1>
-        </div>
+          
+          <div className="absolute -top-10 left-15 cursor-pointer  h-full">
+            <Link to="/">
+              <img
+                className="h-60 w-auto object-contain"
+                src={Logo}
+                alt="JobDekhoo Logo"
+              />
+            </Link>
+          </div>
 
         <div className="hidden md:flex w-1/2 bg-gradient-to-b from-white via-orange-300 to-[#EA590D] text-white p-14 flex-col justify-center">
 

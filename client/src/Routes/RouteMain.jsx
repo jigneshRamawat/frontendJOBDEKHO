@@ -11,6 +11,13 @@ import CompanyRegister from "../Component/Hrms/HrmsHome/CompanyRegister";
 import HrmLogin from "../Component/Hrms/HrmsHome/HrmLogin";
 import Hrmsintrodetails from "../Component/Hrms/HrmsHome/Hrmsintrodetails";
 import MainWhyDetails from "../Pages/Allhomepage/MainWhyDetails";
+import JobDetails from "../Component/Jobportal/Home/JobLayoutHome/Jobspage/JobDetails";
+import Componydashbordhome from "../Component/Hrms/Compony/dashbord/componydashbordhome/componydashbordhome";
+import Hrdashboard from "../Component/Hrms/Compony/dashbord/Hrdashboard/Hrdashboard";
+import Employeedashboard from "../Component/Hrms/Compony/dashbord/Employeedashboard/Employeedashboard";
+import ProtectedRoute from "../Component/Hrms/ProtectedRoute";
+import CreateHrCompony from "../Component/Hrms/Compony/dashbord/componydashbordhome/CreateHrCompony";
+
 
 function ScrollToTop() {
   const { pathname } = useLocation();
@@ -32,7 +39,7 @@ const PageTransition = ({ children }) => {
       initial={{ opacity: 0, y: 15 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -15 }}
-      transition={{ duration: 0.01, ease: "easeInOut" }}
+      transition={{ duration: 0.15, ease: "easeInOut" }}
     >
       {children}
     </motion.div>
@@ -104,7 +111,90 @@ function RouteMain() {
               </PageTransition>
             }
           />
-          <Route path="/hrmsintrodetails/:id" element={<Hrmsintrodetails />} />
+          <Route 
+            path="/hrmsintrodetails/:id" 
+            element={
+              <PageTransition>
+                <Hrmsintrodetails />
+              </PageTransition>
+            } 
+          />
+          
+          {/* FIXED JOB DETAILS PATH: Matches incoming URLs precisely */}
+          <Route 
+            path="/jobLayoutHome/Jobspage/JobDetails/:category" 
+            element={
+              <PageTransition>
+                <JobDetails />
+              </PageTransition>
+            } 
+          />
+
+          {/* FIXED MAIN WHY DETAILS PATH */}
+          <Route 
+            path="/mainwhydetails/:id" 
+            element={
+              <PageTransition>
+                <MainWhyDetails />
+              </PageTransition>
+            } 
+          />
+
+    
+
+<Route
+  path="/componydashbord"
+  element={
+    <ProtectedRoute
+      allowedRoles={["company"]}
+    >
+      <PageTransition>
+        <Componydashbordhome/>
+      </PageTransition>
+    </ProtectedRoute>
+  }
+/>
+
+<Route
+  path="/hrdashboard"
+  element={
+    <ProtectedRoute
+      allowedRoles={["hr"]}
+    >
+      <PageTransition>
+        <Hrdashboard />
+      </PageTransition>
+    </ProtectedRoute>
+  }
+/>
+ 
+
+<Route
+  path="/employeedashboard"
+  element={
+    <ProtectedRoute
+      allowedRoles={["employee"]}
+    >
+      <PageTransition>
+        <Employeedashboard />
+      </PageTransition>
+    </ProtectedRoute>
+  }
+/>
+<Route
+  path="/creteHr"
+  element={
+    <ProtectedRoute
+      allowedRoles={["company"]}
+    >
+      <PageTransition>
+        <CreateHrCompony/>
+      </PageTransition>
+    </ProtectedRoute>
+  }
+/>
+
+          {/* GLOBAL FALLBACK WILDCARD 404 ROUTE */}
           <Route
             path="*"
             element={
@@ -118,8 +208,6 @@ function RouteMain() {
               </PageTransition>
             }
           />
-
-          <Route path="/mainwhydetails/:id" element={<AnimatePresence><MainWhyDetails /></AnimatePresence>} />
         </Routes>
       </AnimatePresence>
     </>

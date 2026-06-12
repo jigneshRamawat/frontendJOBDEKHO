@@ -48,7 +48,7 @@ function Login() {
       if (response?.success) {
         toast.success(response.message || "Login successful!");
         setFormData({ email: "", password: "" });
-        const redirectPath = location.state?.from || "/JobHome";
+        const redirectPath = location.state?.from || "/jobs";
         navigate(redirectPath, { replace: true });
       } else {
         // Show specific error for HRMS users
@@ -95,7 +95,7 @@ function Login() {
           <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8">
             <div className="flex justify-between items-center">
               <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
-              <Button text="Home" to="/JobHome" variant="outline" />
+              <Button text="Home" to="/jobs" variant="outline" />
             </div>
             <p className="text-gray-500 mt-2 mb-6">Login to continue your journey.</p>
 

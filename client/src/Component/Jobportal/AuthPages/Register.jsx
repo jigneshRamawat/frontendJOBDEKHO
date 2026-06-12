@@ -1,12 +1,12 @@
 import { useContext, useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { Eye, EyeOff } from "lucide-react";
-import { toast } from "react-hot-toast"; // <-- Toast Import Kiya
+import { toast } from "react-hot-toast";
 import Button from "../../../Reuse/Button";
 import { AppContext } from "../../Context/AppContect";
 
 function Register() {
-  const { registerUser, authLoading } = useContext(AppContext);
+  const { registerUser, userAuthLoading } = useContext(AppContext); // Use userAuthLoading
   const navigate = useNavigate();
 
   const [showPassword, setShowPassword] = useState(false);
@@ -16,77 +16,49 @@ function Register() {
     phone: "",
     password: "",
   });
-
   const [errors, setErrors] = useState({});
 
-  // ------------------------
-  // Validation
-  // ------------------------
   function validate() {
     let newErrors = {};
 
-    // Name validation
     if (formData.name.trim().length < 3) {
       newErrors.name = "Name must be at least 3 characters";
     }
 
-    // Email validation
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(formData.email)) {
       newErrors.email = "Please enter a valid email";
     }
 
-    // Phone validation
     const phoneRegex = /^(?:\+91[\-\s]?)?[6-9]\d{9}$/;
     if (!phoneRegex.test(formData.phone)) {
       newErrors.phone = "Phone must be like +919876543210";
     }
 
-    // Password validation
     const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).+$/;
     if (formData.password.length < 8) {
       newErrors.password = "Password must be at least 8 characters";
     } else if (formData.password.length > 12) {
       newErrors.password = "Password cannot exceed 12 characters";
     } else if (!passwordRegex.test(formData.password)) {
-      newErrors.password =
-        "Must contain uppercase, lowercase, number & special character";
+      newErrors.password = "Must contain uppercase, lowercase, number & special character";
     }
 
     setErrors(newErrors);
-
-    // FIX: Agar local validation fail hoti hai, toh error toast dikhao
     if (Object.keys(newErrors).length > 0) {
       toast.error("Please fix the validation errors in the form.");
     }
-
     return Object.keys(newErrors).length === 0;
   }
 
-  // ------------------------
-  // Handle Input Change
-  // ------------------------
   function handleChange(e) {
     const { name, value } = e.target;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-
-    // clear field error
-    setErrors((prev) => ({
-      ...prev,
-      [name]: "",
-    }));
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    setErrors((prev) => ({ ...prev, [name]: "" }));
   }
 
-  // ------------------------
-  // Handle Submit
-  // ------------------------
   async function handleSubmit(e) {
     e.preventDefault();
-
     const isValid = validate();
     if (!isValid) return;
 
@@ -95,23 +67,15 @@ function Register() {
       email: formData.email,
       password: formData.password,
       phone: formData.phone,
-      role: "hr",
+      role: "user", // FIXED: Job portal users get "user" role, NOT "hr"
     };
 
     try {
       const response = await registerUser(payload);
 
       if (response?.success) {
-        // Reset form on success
-        setFormData({
-          name: "",
-          email: "",
-          phone: "",
-          password: "",
-        });
-
-        // Navigate directly to home/dashboard
-        navigate("/JobHome", { replace: true });
+        setFormData({ name: "", email: "", phone: "", password: "" });
+        navigate("/jobs", { replace: true });
       } else {
         console.log("Registration API response failed:", response?.message);
       }
@@ -132,30 +96,21 @@ function Register() {
 
       <div className="hidden md:flex w-1/2 bg-gradient-to-b from-white via-orange-300 to-[#EA590D] text-white p-12 flex-col justify-center">
         <h1 className="text-5xl font-bold">Find Your Dream Job</h1>
-        <p className="mt-4 text-lg">
-          Your partner in finding a dream job that fuels your ambitions.
-        </p>
-        <div className="mt-6 p-4 rounded-xl inline-block bg-white/10">
-          1.5M+ job seekers trust us
-        </div>
+        <p className="mt-4 text-lg">Your partner in finding a dream job that fuels your ambitions.</p>
+        <div className="mt-6 p-4 rounded-xl inline-block bg-white/10">1.5M+ job seekers trust us</div>
       </div>
 
       <div className="w-full md:w-1/2 flex items-center justify-center p-6">
         <div className="w-full max-w-lg bg-white shadow-2xl rounded-3xl p-8">
           <div className="flex justify-between items-center">
-            <h2 className="text-3xl font-bold text-gray-800 mb-2">
-              Create Account
-            </h2>
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">Create Account</h2>
             <Button text="Home" to="/JobHome" variant="outline" />
           </div>
-
           <p className="text-gray-500 mb-6">Register and start your journey.</p>
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="text-sm font-medium text-gray-700">
-                Full Name
-              </label>
+              <label className="text-sm font-medium text-gray-700">Full Name</label>
               <input
                 type="text"
                 name="name"
@@ -163,14 +118,10 @@ function Register() {
                 onChange={handleChange}
                 placeholder="Enter full name"
                 className={`w-full mt-1 p-3 rounded-xl border outline-none transition ${
-                  errors.name
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-orange-500"
+                  errors.name ? "border-red-500" : "border-gray-300 focus:border-orange-500"
                 }`}
               />
-              {errors.name && (
-                <p className="text-red-500 text-sm mt-1">{errors.name}</p>
-              )}
+              {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
             </div>
 
             <div>
@@ -182,14 +133,10 @@ function Register() {
                 onChange={handleChange}
                 placeholder="Enter your email"
                 className={`w-full mt-1 p-3 rounded-xl border outline-none transition ${
-                  errors.email
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-orange-500"
+                  errors.email ? "border-red-500" : "border-gray-300 focus:border-orange-500"
                 }`}
               />
-              {errors.email && (
-                <p className="text-red-500 text-sm mt-1">{errors.email}</p>
-              )}
+              {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
             </div>
 
             <div>
@@ -201,20 +148,14 @@ function Register() {
                 onChange={handleChange}
                 placeholder="+919876543210"
                 className={`w-full mt-1 p-3 rounded-xl border outline-none transition ${
-                  errors.phone
-                    ? "border-red-500"
-                    : "border-gray-300 focus:border-orange-500"
+                  errors.phone ? "border-red-500" : "border-gray-300 focus:border-orange-500"
                 }`}
               />
-              {errors.phone && (
-                <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
-              )}
+              {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
             </div>
 
             <div>
-              <label className="text-sm font-medium text-gray-700">
-                Password
-              </label>
+              <label className="text-sm font-medium text-gray-700">Password</label>
               <div className="relative mt-1">
                 <input
                   type={showPassword ? "text" : "password"}
@@ -223,9 +164,7 @@ function Register() {
                   onChange={handleChange}
                   placeholder="Enter password"
                   className={`w-full p-3 rounded-xl border outline-none transition ${
-                    errors.password
-                      ? "border-red-500"
-                      : "border-gray-300 focus:border-orange-500"
+                    errors.password ? "border-red-500" : "border-gray-300 focus:border-orange-500"
                   }`}
                 />
                 <button
@@ -236,21 +175,19 @@ function Register() {
                   {showPassword ? <EyeOff size={20} /> : <Eye size={20} />}
                 </button>
               </div>
-              {errors.password && (
-                <p className="text-red-500 text-sm mt-1">{errors.password}</p>
-              )}
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
             </div>
 
             <button
               type="submit"
-              disabled={authLoading}
+              disabled={userAuthLoading}
               className={`w-full mt-4 py-3 rounded-xl font-semibold transition duration-300 flex items-center justify-center gap-2 ${
-                authLoading
+                userAuthLoading
                   ? "bg-orange-400 cursor-not-allowed"
                   : "bg-orange-500 hover:bg-orange-600 text-white"
               }`}
             >
-              {authLoading ? (
+              {userAuthLoading ? (
                 <>
                   <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
                   Registering...
@@ -263,10 +200,7 @@ function Register() {
 
           <p className="text-center text-gray-500 mt-6">
             Already have an account?{" "}
-            <Link
-              to="/login"
-              className="text-orange-500 font-semibold hover:underline"
-            >
+            <Link to="/login" className="text-orange-500 font-semibold hover:underline">
               Login
             </Link>
           </p>

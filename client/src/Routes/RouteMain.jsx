@@ -17,7 +17,7 @@ import Hrdashboard from "../Component/Hrms/Compony/dashbord/Hrdashboard/Hrdashbo
 import Employeedashboard from "../Component/Hrms/Compony/dashbord/Employeedashboard/Employeedashboard";
 import ProtectedRoute from "../Component/Hrms/ProtectedRoute";
 import CreateHrCompony from "../Component/Hrms/Compony/dashbord/componydashbordhome/CreateHrCompony";
-import AboutUs from "../Pages/AboutUs";
+import AboutUs from "../Pages/AboutUs.jsx";
 // import PrivacyPolicy from "../Component/Legal/PrivacyPolicy";
 // import TermsCondition from "../Component/Legal/TermsCondition";
 

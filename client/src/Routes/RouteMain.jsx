@@ -17,16 +17,12 @@ import Hrdashboard from "../Component/Hrms/Compony/dashbord/Hrdashboard/Hrdashbo
 import Employeedashboard from "../Component/Hrms/Compony/dashbord/Employeedashboard/Employeedashboard";
 import ProtectedRoute from "../Component/Hrms/ProtectedRoute";
 import CreateHrCompony from "../Component/Hrms/Compony/dashbord/componydashbordhome/CreateHrCompony";
-import AboutUs from "../Pages/AboutUs.jsx";
+import AboutUs from "../Pages/AboutUs";
 // import PrivacyPolicy from "../Component/Legal/PrivacyPolicy";
 // import TermsCondition from "../Component/Legal/TermsCondition";
 
-
-
-
 function ScrollToTop() {
   const { pathname } = useLocation();
-
 
   useEffect(() => {
     window.scrollTo({
@@ -55,7 +51,6 @@ const PageTransition = ({ children }) => {
 function RouteMain() {
   const location = useLocation();
 
-
   return (
     <>
       <ScrollToTop />
@@ -78,16 +73,15 @@ function RouteMain() {
               </PageTransition>
             }
           />
-
-<Route
-  path="/about-us"
-  element={
-    <PageTransition>
-      <AboutUs />
-    </PageTransition>
-  }
-/>
-{/* <Route
+          <Route
+            path="/about-us"
+            element={
+              <PageTransition>
+                <AboutUs />
+              </PageTransition>
+            }
+          />
+          {/* <Route
   path="/privacy-policy"
   element={
     <PageTransition>

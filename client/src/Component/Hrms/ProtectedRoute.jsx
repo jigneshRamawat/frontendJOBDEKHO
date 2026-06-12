@@ -1,29 +1,53 @@
-import { useContext } from "react";
-import { Navigate } from "react-router-dom";
+import { useContext, useEffect, useState } from "react";
+import { Navigate, useLocation } from "react-router-dom";
 import { AppContext } from "../Context/AppContect";
+import Loader from "../../Reuse/Loader";
 
 function ProtectedRoute({ children, allowedRoles }) {
-  const { user, loading } = useContext(AppContext);
+  const { companyUser, companyLoading } = useContext(AppContext);
+  const location = useLocation();
+  const [isChecking, setIsChecking] = useState(true);
 
-  if (loading) {
+  // Check if user data exists in memory or localStorage fallback
+  useEffect(() => {
+    // Small delay to let context load from localStorage
+    const timer = setTimeout(() => {
+      setIsChecking(false);
+    }, 100);
+    
+    return () => clearTimeout(timer);
+  }, []);
+
+  // Still loading auth state
+  if (companyLoading || isChecking) {
     return (
-      <div className="min-h-screen flex justify-center items-center">
-        Loading...
+      <div className="fixed inset-0 flex items-center justify-center bg-white z-50">
+        <Loader />
       </div>
     );
   }
 
-  // Not logged in
-  if (!user) {
-    return <Navigate to="/hrm-login" replace />;
+  // Not logged in — redirect to login, save intended path
+  if (!companyUser) {
+    return <Navigate to="/hrm-login" state={{ from: location.pathname }} replace />;
   }
 
-  // Role not allowed
-  if (!allowedRoles.includes(user?.role)) {
+  // Wrong role — redirect to appropriate dashboard
+  const userRole = companyUser?.role;
+  if (!allowedRoles.includes(userRole)) {
+    // Redirect to correct dashboard based on role
+    if (userRole === "company") {
+      return <Navigate to="/componydashbord" replace />;
+    } else if (userRole === "hr") {
+      return <Navigate to="/hrdashboard" replace />;
+    } else if (userRole === "employee") {
+      return <Navigate to="/employeedashboard" replace />;
+    }
     return <Navigate to="/hrms" replace />;
   }
 
+  // Authorized — render children
   return children;
 }
 
-export default ProtectedRoute;
+export default ProtectedRoute;          

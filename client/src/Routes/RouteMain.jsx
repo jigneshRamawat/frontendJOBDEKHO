@@ -17,10 +17,16 @@ import Hrdashboard from "../Component/Hrms/Compony/dashbord/Hrdashboard/Hrdashbo
 import Employeedashboard from "../Component/Hrms/Compony/dashbord/Employeedashboard/Employeedashboard";
 import ProtectedRoute from "../Component/Hrms/ProtectedRoute";
 import CreateHrCompony from "../Component/Hrms/Compony/dashbord/componydashbordhome/CreateHrCompony";
+import AboutUs from "../Pages/AboutUs";
+// import PrivacyPolicy from "../Component/Legal/PrivacyPolicy";
+// import TermsCondition from "../Component/Legal/TermsCondition";
+
+
 
 
 function ScrollToTop() {
   const { pathname } = useLocation();
+
 
   useEffect(() => {
     window.scrollTo({
@@ -49,6 +55,7 @@ const PageTransition = ({ children }) => {
 function RouteMain() {
   const location = useLocation();
 
+
   return (
     <>
       <ScrollToTop />
@@ -71,6 +78,33 @@ function RouteMain() {
               </PageTransition>
             }
           />
+
+<Route
+  path="/about-us"
+  element={
+    <PageTransition>
+      <AboutUs />
+    </PageTransition>
+  }
+/>
+{/* <Route
+  path="/privacy-policy"
+  element={
+    <PageTransition>
+      <PrivacyPolicy />
+    </PageTransition>
+  }
+/>
+
+<Route
+  path="/terms-conditions"
+  element={
+    <PageTransition>
+      <TermsCondition />
+    </PageTransition>
+  }
+/> */}
+
           <Route
             path="/jobs"
             element={
@@ -111,90 +145,79 @@ function RouteMain() {
               </PageTransition>
             }
           />
-          <Route 
-            path="/hrmsintrodetails/:id" 
+          <Route
+            path="/hrmsintrodetails/:id"
             element={
               <PageTransition>
                 <Hrmsintrodetails />
               </PageTransition>
-            } 
+            }
           />
-          
+
           {/* FIXED JOB DETAILS PATH: Matches incoming URLs precisely */}
-          <Route 
-            path="/jobLayoutHome/Jobspage/JobDetails/:category" 
+          <Route
+            path="/jobLayoutHome/Jobspage/JobDetails/:category"
             element={
               <PageTransition>
                 <JobDetails />
               </PageTransition>
-            } 
+            }
           />
 
           {/* FIXED MAIN WHY DETAILS PATH */}
-          <Route 
-            path="/mainwhydetails/:id" 
+          <Route
+            path="/mainwhydetails/:id"
             element={
               <PageTransition>
                 <MainWhyDetails />
               </PageTransition>
-            } 
+            }
           />
 
-    
+          <Route
+            path="/componydashbord"
+            element={
+              <ProtectedRoute allowedRoles={["company"]}>
+                <PageTransition>
+                  <Componydashbordhome />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
 
-<Route
-  path="/componydashbord"
-  element={
-    <ProtectedRoute
-      allowedRoles={["company"]}
-    >
-      <PageTransition>
-        <Componydashbordhome/>
-      </PageTransition>
-    </ProtectedRoute>
-  }
-/>
+          <Route
+            path="/hrdashboard"
+            element={
+              <ProtectedRoute allowedRoles={["hr"]}>
+                <PageTransition>
+                  <Hrdashboard />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
 
-<Route
-  path="/hrdashboard"
-  element={
-    <ProtectedRoute
-      allowedRoles={["hr"]}
-    >
-      <PageTransition>
-        <Hrdashboard />
-      </PageTransition>
-    </ProtectedRoute>
-  }
-/>
- 
+          <Route
+            path="/employeedashboard"
+            element={
+              <ProtectedRoute allowedRoles={["employee"]}>
+                <PageTransition>
+                  <Employeedashboard />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/creteHr"
+            element={
+              <ProtectedRoute allowedRoles={["company"]}>
+                <PageTransition>
+                  <CreateHrCompony />
+                </PageTransition>
+              </ProtectedRoute>
+            }
+          />
+          <Route path="/about-us" element={<h1>About Page Working</h1>} />
 
-<Route
-  path="/employeedashboard"
-  element={
-    <ProtectedRoute
-      allowedRoles={["employee"]}
-    >
-      <PageTransition>
-        <Employeedashboard />
-      </PageTransition>
-    </ProtectedRoute>
-  }
-/>
-<Route
-  path="/creteHr"
-  element={
-    <ProtectedRoute
-      allowedRoles={["company"]}
-    >
-      <PageTransition>
-        <CreateHrCompony/>
-      </PageTransition>
-    </ProtectedRoute>
-  }
-/>
-
-          {/* GLOBAL FALLBACK WILDCARD 404 ROUTE */}
           <Route
             path="*"
             element={

@@ -1,24 +1,22 @@
-import { FaLinkedinIn, FaGithub, FaInstagram, FaTwitter } from "react-icons/fa";
+import { FaLinkedinIn, FaGithub, FaInstagram } from "react-icons/fa";
 import Logo from "../../assest/img/pngLogo.png";
 import Button from "../../Reuse/Button";
-
+import { Link } from "react-router-dom";
 const scrollToServices = () => {
   const section = document.getElementById("our-services");
+
   if (section) {
-    // Scrolls smoothly to the top of the section
-    section.scrollIntoView({ behavior: "smooth", block: "start" });
-    
-    // Close the mobile menu automatically after clicking
-    setIsOpen(false);
+    section.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
   }
 };
-
 
 function FooterBanner() {
   return (
     // Changed text-white to text-gray-900 to ensure visibility on the light gradient background
     <footer className="bg-gradient-to-r from-[#fff7f2] via-[#fff3eb] to-[#ffe4d6] text-gray-900 relative overflow-hidden">
-      
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 md:py-16">
         <div className="bg-white/10 rounded-[30px] p-8 md:p-12 lg:p-14 flex flex-col lg:flex-row items-center justify-between gap-8 text-center lg:text-left shadow-2xl">
           <div>
@@ -33,59 +31,112 @@ function FooterBanner() {
             </p>
           </div>
 
-          <Button text=" Get Started" onClick={scrollToServices}>
-           
-          </Button>
+          <Button text=" Get Started" onClick={scrollToServices}></Button>
         </div>
       </div>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 py-10 border-t border-orange-200">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-10 lg:gap-12">
-          
           {/* 1. Brand Section */}
           <div className="col-span-1 sm:col-span-2 lg:col-span-1 p-1 ">
             <div className="flex items-center  mb-2  h-25 ">
               {/* Reduced h-60 to h-16 so the logo isn't massive */}
-              <img 
-                className="h-100 w-auto object-contain cursor-pointer" 
-                src={Logo} 
-                alt="JobDekho Logo" 
+              <img
+                className="h-100 w-auto object-contain cursor-pointer"
+                src={Logo}
+                alt="JobDekho Logo"
               />
             </div>
 
             <p className="text-gray-600 leading-relaxed text-sm md:text-base pr-4">
-              The ultimate platform to find your next career move, hire top talent, 
-              and manage your entire workforce seamlessly.
+              The ultimate platform to find your next career move, hire top
+              talent, and manage your entire workforce seamlessly.
             </p>
 
             {/* Social Icons */}
             <div className="flex gap-3 mt-6">
-              {[FaLinkedinIn, FaGithub, FaInstagram, FaTwitter].map((Icon, index) => (
-                <div
-                  key={index}
-                  className="bg-white text-[#EA580C] shadow-sm hover:bg-[#EA580C] hover:text-white hover:-translate-y-1 transition-all duration-300 w-10 h-10 md:w-11 md:h-11 rounded-xl flex items-center justify-center cursor-pointer"
-                >
-                  <Icon size={18} />
-                </div>
-              ))}
+              {[
+                {
+                  icon: FaLinkedinIn,
+                  link: "https://www.linkedin.com/in/jignesh-ramawat-47b14121a",
+                },
+                {
+                  icon: FaGithub,
+                  link: "https://github.com/jigneshRamawat",
+                },
+                {
+                  icon: FaInstagram,
+                  link: "https://www.instagram.com/arp_21_",
+                },
+              ].map((item, index) => {
+                const Icon = item.icon;
+
+                return (
+                  <a
+                    key={index}
+                    href={item.link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="bg-white text-[#EA580C] shadow-sm hover:bg-[#EA580C] hover:text-white hover:-translate-y-1 transition-all duration-300 w-10 h-10 md:w-11 md:h-11 rounded-xl flex items-center justify-center cursor-pointer"
+                  >
+                    <Icon size={18} />
+                  </a>
+                );
+              })}
             </div>
           </div>
 
-          {/* 2. Quick Links */}
           <div>
             <h3 className="text-lg md:text-xl text-[#EA580C] font-bold mb-6">
               Quick Links
             </h3>
+
             <ul className="space-y-3 text-sm md:text-base text-gray-600 font-medium">
               {[
-                "Employee Dashboard", 
-                "Find Jobs", 
-                "Companies", 
-                "About Us", 
-                "Contact",
-                "HR Dashboard"
+                {
+                  name: "Employee Dashboard",
+                  path: "/employeedashboard",
+                },
+                {
+                  name: "HR Dashboard",
+                  path: "/hrdashboard",
+                },
+                {
+                  name: "Company Dashboard",
+                  path: "/componydashbord",
+                },
+                {
+                  name: "Find Jobs",
+                  path: "/jobs",
+                },
+                {
+                  name: "Companies",
+                  path: "/company-register",
+                },
+                {
+                  name: "About Us",
+                  path: "/about-us",
+                },
+                {
+                  name: "Contact",
+                  path: "mailto:jigneshramawat21@gmail.com",
+                },
               ].map((item) => (
-                <li key={item} className="hover:text-[#EA580C] w-30 hover:translate-x-1 cursor-pointer transition-all duration-200 flex items-center">
-                  {item}
+                <li key={item.name}>
+                  {item.path.startsWith("mailto:") ? (
+                    <a
+                      href={item.path}
+                      className="hover:text-[#EA580C] hover:translate-x-1 transition-all duration-200 flex items-center cursor-pointer"
+                    >
+                      {item.name}
+                    </a>
+                  ) : (
+                    <Link
+                      to={item.path}
+                      className="hover:text-[#EA580C] hover:translate-x-1 transition-all duration-200 flex items-center cursor-pointer"
+                    >
+                      {item.name}
+                    </Link>
+                  )}
                 </li>
               ))}
             </ul>
@@ -104,53 +155,59 @@ function FooterBanner() {
                 "Remote Jobs",
                 "Marketing",
               ].map((item) => (
-                <li key={item} className="hover:text-[#EA580C] w-30 hover:translate-x-1 cursor-pointer transition-all duration-200">
+                <li
+                  key={item}
+                  className="hover:text-[#EA580C] w-30 hover:translate-x-1 cursor-pointer transition-all duration-200"
+                >
                   {item}
                 </li>
               ))}
             </ul>
           </div>
 
-          <div>
-            <h3 className="text-lg md:text-xl text-[#EA580C] font-bold mb-6">
-              Contact Us
-            </h3>
-            <div className="space-y-4 text-sm md:text-base text-gray-600 font-medium">
-              <p className="flex items-start gap-2">
-                Jaipur, Rajasthan, India
-              </p>
-              <p className="flex items-center gap-2 hover:text-[#EA580C] transition-colors cursor-pointer">
-                support@jobdekho.com
-              </p>
-              <p className="flex items-center gap-2 hover:text-[#EA580C] transition-colors cursor-pointer">
-                +91 7340088133
-              </p>
-            </div>
-          </div>
+          <div className="space-y-4 text-sm md:text-base text-gray-600 font-medium">
+            <p className="flex items-start gap-2">Jaipur, Rajasthan, India</p>
 
+            <a
+              href="mailto:support@jobdekho.com"
+              className="flex items-center gap-2 hover:text-[#EA580C] transition-colors cursor-pointer"
+            >
+              support@jobdekho.com
+            </a>
+
+            <a
+              href="tel:+917340088133"
+              className="flex items-center gap-2 hover:text-[#EA580C] transition-colors cursor-pointer"
+            >
+              +91 7340088133
+            </a>
+          </div>
         </div>
       </div>
 
       {/* ================= BOTTOM BAR ================= */}
       <div className="bg-[#EA580C]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 py-5 flex flex-col md:flex-row items-center justify-between gap-4">
-          
           <p className="text-white/90 text-sm md:text-base text-center md:text-left">
             © {new Date().getFullYear()} JobDekho. All Rights Reserved.
           </p>
 
           <div className="flex gap-6 text-sm md:text-base text-white/90 font-medium">
-            <span className="hover:text-white hover:underline cursor-pointer transition-all">
+            <Link
+              to="/privacy-policy"
+              className="hover:text-white hover:underline cursor-pointer transition-all"
+            >
               Privacy Policy
-            </span>
-            <span className="hover:text-white hover:underline cursor-pointer transition-all">
+            </Link>
+            <Link
+              to="/terms-conditions"
+              className="hover:text-white hover:underline cursor-pointer transition-all"
+            >
               Terms & Conditions
-            </span>
+            </Link>
           </div>
-          
         </div>
       </div>
-      
     </footer>
   );
 }

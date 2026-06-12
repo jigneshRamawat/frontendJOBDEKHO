@@ -11,6 +11,8 @@ import {
 
 import {
   registerCompanyApi,
+  verifyCompanyEmailApi,
+  resendCompanyOtpApi,
   loginCompanyApi,
   checkCompanyAuthApi,
   logoutCompanyApi,
@@ -19,34 +21,35 @@ import {
 export const AppContext = createContext();
 
 export default function AppProvider({ children }) {
-  // Job Portal State
   const [user, setUser] = useState(null);
   const [userLoading, setUserLoading] = useState(true);
   const [userAuthLoading, setUserAuthLoading] = useState(false);
 
-  // HRMS State
   const [companyUser, setCompanyUser] = useState(null);
   const [companyLoading, setCompanyLoading] = useState(true);
   const [companyAuthLoading, setCompanyAuthLoading] = useState(false);
 
+  // Check auth on mount — sessionStorage only
   useEffect(() => {
     checkBothAuths();
   }, []);
 
   const checkBothAuths = async () => {
     try {
-      // Check Job Portal Auth (only accepts role: "user")
+      // Job Portal — sessionStorage
       const userResponse = await checkAuthApi();
-      if (userResponse.response.ok) {
-        setUser(userResponse.data?.data?.user || userResponse.data?.data || null);
+      if (userResponse.response.ok && userResponse.data) {
+        const userData = userResponse.data?.data?.user || null;
+        setUser(userData?.role === "user" ? userData : null);
       } else {
         setUser(null);
       }
 
-      // Check HRMS Auth (only accepts role: company/hr/employee)
+      // HRMS — sessionStorage (no /company/me API)
       const companyResponse = await checkCompanyAuthApi();
-      if (companyResponse.response.ok) {
-        setCompanyUser(companyResponse.data?.data?.user || companyResponse.data?.data || null);
+      if (companyResponse.response.ok && companyResponse.data) {
+        const companyData = companyResponse.data?.data?.user || null;
+        setCompanyUser(companyData);
       } else {
         setCompanyUser(null);
       }
@@ -61,35 +64,22 @@ export default function AppProvider({ children }) {
   };
 
   // ==========================
-  // JOB PORTAL: LOGIN (Blocks HRMS users)
+  // JOB PORTAL LOGIN
   // ==========================
   const loginUser = async (credentials) => {
     try {
       setUserAuthLoading(true);
-
       const { response, data } = await loginApi(credentials);
 
       if (response.ok) {
         const loggedInUser = data?.data?.user || null;
-
-        // Double-check: Block HRMS roles
         if (["company", "hr", "employee"].includes(loggedInUser?.role)) {
           toast.error("Company accounts must use HRMS portal");
-          setUserAuthLoading(false);
-          return {
-            success: false,
-            message: "Please login at HRMS portal",
-          };
+          return { success: false, message: "Please login at HRMS portal" };
         }
-
         setUser(loggedInUser);
         toast.success(`Welcome ${loggedInUser?.name || "User"}!`);
-        return {
-          success: true,
-          user: loggedInUser,
-          role: loggedInUser?.role,
-          message: data?.message,
-        };
+        return { success: true, user: loggedInUser, role: loggedInUser?.role, message: data?.message };
       }
 
       toast.error(data?.message || "Login failed");
@@ -103,23 +93,16 @@ export default function AppProvider({ children }) {
   };
 
   // ==========================
-  // JOB PORTAL: REGISTER
+  // JOB PORTAL REGISTER
   // ==========================
   const registerUser = async (formData) => {
     try {
       setUserAuthLoading(true);
-
-      const { response, data } = await registerApi({
-        ...formData,
-        role: "user", // Force role
-      });
+      const { response, data } = await registerApi({ ...formData, role: "user" });
 
       if (response.ok) {
         toast.success("Account created!");
-        return await loginUser({
-          email: formData.email,
-          password: formData.password,
-        });
+        return await loginUser({ email: formData.email, password: formData.password });
       }
 
       toast.error(data.message || "Registration failed");
@@ -133,7 +116,7 @@ export default function AppProvider({ children }) {
   };
 
   // ==========================
-  // JOB PORTAL: LOGOUT
+  // JOB PORTAL LOGOUT
   // ==========================
   const logoutUser = async () => {
     try {
@@ -156,12 +139,16 @@ export default function AppProvider({ children }) {
   const registerCompany = async (payload) => {
     try {
       setCompanyAuthLoading(true);
-
       const data = await registerCompanyApi(payload);
 
       if (data?.success === false) {
         toast.error(data.message || "Company registration failed");
         return { success: false };
+      }
+
+      if (data?.message?.toLowerCase().includes("otp") || data?.otpSent) {
+        toast.success(data.message || "OTP sent!");
+        return { success: true, data, otpSent: true };
       }
 
       toast.success("Company registered successfully");
@@ -175,35 +162,60 @@ export default function AppProvider({ children }) {
   };
 
   // ==========================
-  // HRMS: LOGIN (Blocks Job Portal users)
+  // HRMS: VERIFY OTP
+  // ==========================
+  const verifyCompanyOtp = async (email, otp) => {
+    try {
+      const { response, data } = await verifyCompanyEmailApi(email, otp);
+      if (response.ok && data?.success) {
+        toast.success("Email verified!");
+        return { success: true, data };
+      }
+      toast.error(data?.message || "OTP verification failed");
+      return { success: false, message: data?.message };
+    } catch (error) {
+      toast.error("OTP verification error");
+      return { success: false, message: "Something went wrong" };
+    }
+  };
+
+  // ==========================
+  // HRMS: RESEND OTP
+  // ==========================
+  const resendCompanyOtp = async (email) => {
+    try {
+      const { response, data } = await resendCompanyOtpApi(email);
+      if (response.ok) {
+        toast.success("New OTP sent!");
+        return { success: true, data };
+      }
+      toast.error(data?.message || "Failed to resend OTP");
+      return { success: false };
+    } catch (error) {
+      toast.error("Error resending OTP");
+      return { success: false };
+    }
+  };
+
+  // ==========================
+  // HRMS: LOGIN
   // ==========================
   const loginCompany = async (credentials) => {
     try {
       setCompanyAuthLoading(true);
-
       const { response, data } = await loginCompanyApi(credentials);
 
       if (response.ok) {
         const loggedInUser = data?.data?.user || null;
 
-        // Double-check: Block job portal users
         if (loggedInUser?.role === "user") {
           toast.error("Job seekers cannot access HRMS");
-          setCompanyAuthLoading(false);
-          return {
-            success: false,
-            message: "Please use Job Portal for user accounts",
-          };
+          return { success: false, message: "Please use Job Portal" };
         }
 
         setCompanyUser(loggedInUser);
         toast.success(`Welcome ${loggedInUser?.name || "User"}!`);
-        return {
-          success: true,
-          user: loggedInUser,
-          role: loggedInUser?.role,
-          message: data?.message,
-        };
+        return { success: true, user: loggedInUser, role: loggedInUser?.role, message: data?.message };
       }
 
       toast.error(data?.message || "HRMS Login failed");
@@ -245,22 +257,9 @@ export default function AppProvider({ children }) {
   return (
     <AppContext.Provider
       value={{
-        // Job Portal
-        user,
-        setUser,
-        userAuthLoading,
-        loginUser,
-        registerUser,
-        logoutUser,
-        
-        // HRMS
-        companyUser,
-        setCompanyUser,
-        companyAuthLoading,
-        companyLoading,
-        registerCompany,
-        loginCompany,
-        logoutCompany,
+        user, setUser, userAuthLoading, loginUser, registerUser, logoutUser,
+        companyUser, setCompanyUser, companyAuthLoading, companyLoading,
+        registerCompany, verifyCompanyOtp, resendCompanyOtp, loginCompany, logoutCompany,
       }}
     >
       {children}

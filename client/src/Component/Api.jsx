@@ -1,91 +1,99 @@
 const BASE_URL = "https://jobdekho-3vnx.onrender.com/api/v1";
 
+const getUserToken = () => localStorage.getItem("userToken");
+const setUserToken = (token) => {
+  if (token) localStorage.setItem("userToken", token);
+  else localStorage.removeItem("userToken");
+};
+const removeUserToken = () => {
+  localStorage.removeItem("userToken");
+  localStorage.removeItem("userData");
+};
+
+// Helper: Parse response safely
+const safeJsonParse = async (response) => {
+  const text = await response.text();
+  try {
+    return JSON.parse(text);
+  } catch (e) {
+    console.error("Server returned HTML:", text.substring(0, 200));
+    return { success: false, message: "Server error", htmlError: true };
+  }
+};
+
 // ==========================
-// JOB PORTAL LOGIN (Only users with role: "user")
+// JOB PORTAL LOGIN
 // ==========================
 export const loginApi = async (credentials) => {
   try {
     const response = await fetch(`${BASE_URL}/auth/login`, {
       method: "POST",
       headers: {
-        "accept": "*/*",
+        "accept": "application/json",
         "Content-Type": "application/json",
       },
-      credentials: "include",
-      body: JSON.stringify({
-        ...credentials,
-        portalType: "jobportal", // Tell backend this is Job Portal login
-      }),
+      body: JSON.stringify(credentials),
     });
 
-    const data = await response.json();
+    const data = await safeJsonParse(response);
 
-    // Frontend validation: Reject if role is company/hr/employee
-    if (response.ok && ["company", "hr", "employee"].includes(data?.data?.user?.role)) {
-      return {
-        response: { ok: false, status: 403 },
-        data: { message: "Please use HRMS portal for company accounts" },
-      };
+    if (response.ok && data?.data?.accessToken) {
+      setUserToken(data.data.accessToken);
+      localStorage.setItem("userData", JSON.stringify(data.data.user));
     }
 
     return { response, data };
   } catch (error) {
-    console.error("Login API Error:", error);
-    throw error;
+    return {
+      response: { ok: false, status: 500 },
+      data: { message: "Network error" },
+    };
   }
 };
 
 // ==========================
-// JOB PORTAL REGISTER (Force role: "user")
+// CHECK JOB PORTAL AUTH — localStorage only
+// ==========================
+export const checkAuthApi = async () => {
+  const savedUser = localStorage.getItem("userData");
+  const token = getUserToken();
+
+  if (!savedUser || !token) {
+    return { response: { ok: false, status: 401 }, data: null };
+  }
+
+  try {
+    const parsedUser = JSON.parse(savedUser);
+    return {
+      response: { ok: true, status: 200 },
+      data: { data: { user: parsedUser } },
+    };
+  } catch (e) {
+    return { response: { ok: false, status: 500 }, data: null };
+  }
+};
+
+// ==========================
+// JOB PORTAL REGISTER
 // ==========================
 export const registerApi = async (formData) => {
   try {
     const response = await fetch(`${BASE_URL}/auth/register`, {
       method: "POST",
       headers: {
-        "accept": "*/*",
+        "accept": "application/json",
         "Content-Type": "application/json",
       },
-      credentials: "include",
-      body: JSON.stringify({
-        ...formData,
-        role: "user", // Force role to user
-        portalType: "jobportal",
-      }),
+      body: JSON.stringify(formData),
     });
 
-    const data = await response.json();
+    const data = await safeJsonParse(response);
     return { response, data };
   } catch (error) {
-    console.error("Register API Error:", error);
-    throw error;
-  }
-};
-
-// ==========================
-// CHECK JOB PORTAL AUTH
-// ==========================
-export const checkAuthApi = async () => {
-  try {
-    const response = await fetch(`${BASE_URL}/auth/me`, {
-      method: "GET",
-      headers: {
-        "accept": "*/*",
-      },
-      credentials: "include",
-    });
-
-    const data = await response.json();
-
-    // Reject if HRMS user tries to access Job Portal
-    if (response.ok && ["company", "hr", "employee"].includes(data?.data?.user?.role)) {
-      return { response: { ok: false, status: 403 }, data: null };
-    }
-
-    return { response, data };
-  } catch (error) {
-    console.error("Auth Check Error:", error);
-    return { response: { ok: false, status: 500 }, data: null };
+    return {
+      response: { ok: false, status: 500 },
+      data: { message: "Network error" },
+    };
   }
 };
 
@@ -94,16 +102,18 @@ export const checkAuthApi = async () => {
 // ==========================
 export const logoutApi = async () => {
   try {
-    const response = await fetch(`${BASE_URL}/auth/logout`, {
+    const token = getUserToken();
+    await fetch(`${BASE_URL}/auth/logout`, {
       method: "POST",
       headers: {
-        "accept": "*/*",
+        "accept": "application/json",
+        ...(token && { "Authorization": `Bearer ${token}` }),
       },
-      credentials: "include",
     });
-    return response.ok;
+    removeUserToken();
+    return true;
   } catch (error) {
-    console.error("Logout Error:", error);
-    throw error;
+    removeUserToken();
+    return false;
   }
 };

@@ -48,7 +48,7 @@ const HrmHero = () => {
           Helping Management Work Smarter, Not Harder
         </p>
 
-        <div className="relative overflow-hidden ">
+        <div className="relative overflow-visible py-2">
           <div className="flex w-max animate-infiniteScroll gap-4 md:gap-6 p-5">
 
             {[
